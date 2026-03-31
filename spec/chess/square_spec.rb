@@ -8,28 +8,25 @@ describe Chess::Square do
       let(:piece) { double('Piece') }
 
       it 'returns true' do
-        result = square_occupied.occupied?
-        expect(result).to be(true)
+        expect(square_occupied.occupied?).to be(true)
       end
     end
 
-    context 'when unoccupied' do
-      subject(:square_unoccupied) { described_class.new }
+    context 'when vacant' do
+      subject(:square_vacant) { described_class.new }
 
       it 'returns false' do
-        result = square_unoccupied.occupied?
-        expect(result).to be(false)
+        expect(square_vacant.occupied?).to be(false)
       end
     end
   end
 
-  describe '#unoccupied?' do
-    context 'when unoccupied' do
-      subject(:square_unoccupied) { described_class.new }
+  describe '#vacant?' do
+    context 'when vacant' do
+      subject(:square_vacant) { described_class.new }
 
       it 'returns true' do
-        result = square_unoccupied.unoccupied?
-        expect(result).to be(true)
+        expect(square_vacant.vacant?).to be(true)
       end
     end
 
@@ -39,41 +36,30 @@ describe Chess::Square do
       let(:piece) { double('Piece') }
 
       it 'returns false' do
-        result = square_occupied.unoccupied?
-        expect(result).to be(false)
+        expect(square_occupied.vacant?).to be(false)
       end
     end
   end
 
-  describe '#update_occupant' do
+  describe '#fill' do
     subject(:square) { described_class.new }
 
     let(:piece) { double('Piece') }
 
     it 'updates the occupant' do
-      expect { square.update_occupant(piece) }.to change \
+      expect { square.fill(piece) }.to change \
         { square.instance_variable_get(:@occupant) }.from(nil).to(piece)
-    end
-
-    it 'returns the new occupant' do
-      result = square.update_occupant(piece)
-      expect(result).to be(piece)
     end
   end
 
-  describe '#remove_occupant' do
+  describe '#empty' do
     subject(:square) { described_class.new(piece) }
 
     let(:piece) { double('Piece') }
 
     it 'removes the occupant' do
-      expect { square.remove_occupant }.to change \
+      expect { square.empty }.to change \
         { square.instance_variable_get(:@occupant) }.from(piece).to(nil)
-    end
-
-    it 'returns the removed occupant' do
-      result = square.remove_occupant
-      expect(result).to be(piece)
     end
   end
 
@@ -82,20 +68,17 @@ describe Chess::Square do
       subject(:square_occupied) { described_class.new(piece) }
 
       let(:piece) { Chess::Piece.new(:white) }
-      let(:expected) { 'The Square is occupied by a white Piece.' }
 
       it 'returns a string describing the state' do
-        result = square_occupied.to_s
-        expect(result).to eq(expected)
+        expect(square_occupied.to_s).to eq('The Square is occupied by a white Piece.')
       end
     end
 
-    context 'when unoccupied' do
-      subject(:square_unoccupied) { described_class.new }
+    context 'when vacant' do
+      subject(:square_vacant) { described_class.new }
 
       it 'returns a string describing the state' do
-        result = square_unoccupied.to_s
-        expect(result).to eq('The Square is unoccupied.')
+        expect(square_vacant.to_s).to eq('The Square is vacant.')
       end
     end
   end

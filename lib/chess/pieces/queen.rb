@@ -4,8 +4,9 @@ module Chess
   # A queen chess piece
   class Queen < Piece
     using HashExtensions
+
     def to_adjacent_movement_coords(coord)
-      Coord::COORD_METHOD_MAP
+      COORD_METHOD_MAP
         .transform_values { |method_name| coord.public_send(method_name) }
         .delete_empty_arr_vals
     end

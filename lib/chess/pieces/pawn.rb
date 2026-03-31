@@ -3,12 +3,8 @@
 module Chess
   # A pawn chess piece
   class Pawn < Piece
-    WHITE_PAWN_HOME_RANK = 2
-    WHITE_PAWN_LAST_RANK = 8
-    BLACK_PAWN_HOME_RANK = 7
-    BLACK_PAWN_LAST_RANK = 1
-
     using HashExtensions
+
     # Wrap values in an array where necessary to maintain a common interface
     # with the other pieces.
 
@@ -34,10 +30,6 @@ module Chess
       elsif black?
         coord.rank == BLACK_PAWN_LAST_RANK
       end
-    end
-
-    def promote(piece)
-      piece.new(@color)
     end
 
     private

@@ -16,25 +16,23 @@ module Chess
       !!@occupant
     end
 
-    def unoccupied?
+    def vacant?
       @occupant.nil?
     end
 
-    def update_occupant(new_occupant)
-      @occupant = new_occupant
+    def fill(piece)
+      @occupant = piece
     end
 
-    def remove_occupant
-      occupant_to_remove = @occupant
+    def empty
       @occupant = nil
-      occupant_to_remove
     end
 
     def to_s
       if occupied?
         "The #{to_class_s} is occupied by a #{@occupant.color} #{@occupant.to_class_s}."
-      elsif unoccupied?
-        "The #{to_class_s} is unoccupied."
+      elsif vacant?
+        "The #{to_class_s} is vacant."
       end
     end
   end

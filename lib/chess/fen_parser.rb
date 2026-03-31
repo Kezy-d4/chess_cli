@@ -10,7 +10,7 @@ module Chess
       @fen = fen
     end
 
-    def to_piece_placement
+    def to_parsed_piece_placement
       current_rank_i = to_number_of_ranks
       to_ranks.each_with_object({}) do |rank_s, hash|
         rank_a = rank_s_to_rank_a(rank_s)
@@ -20,7 +20,7 @@ module Chess
       end
     end
 
-    def to_data_fields
+    def to_parsed_data_fields
       split_data = @fen.split
       { piece_placement: split_data[0],
         active_color: split_data[1],
@@ -34,7 +34,7 @@ module Chess
 
     def rank_a_to_rank_a_with_coords(rank_a, rank_i)
       rank_a.map.with_index do |char, idx|
-        file = ChessConstants::BOARD_FILE_MARKERS[idx]
+        file = BOARD_FILE_MARKERS[idx]
         rank = rank_i
         coord_s = "#{file}#{rank}"
         [coord_s, char]
@@ -52,7 +52,7 @@ module Chess
     end
 
     def to_ranks
-      to_data_fields[:piece_placement].split('/')
+      to_parsed_data_fields[:piece_placement].split('/')
     end
 
     def to_number_of_ranks

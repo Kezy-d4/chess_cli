@@ -6,8 +6,7 @@ describe Chess::Piece do
       subject(:piece_white) { described_class.new(:white) }
 
       it 'returns true' do
-        result = piece_white.white?
-        expect(result).to be(true)
+        expect(piece_white.white?).to be(true)
       end
     end
 
@@ -15,8 +14,7 @@ describe Chess::Piece do
       subject(:piece_black) { described_class.new(:black) }
 
       it 'returns false' do
-        result = piece_black.white?
-        expect(result).to be(false)
+        expect(piece_black.white?).to be(false)
       end
     end
   end
@@ -26,8 +24,7 @@ describe Chess::Piece do
       subject(:piece_black) { described_class.new(:black) }
 
       it 'returns true' do
-        result = piece_black.black?
-        expect(result).to be(true)
+        expect(piece_black.black?).to be(true)
       end
     end
 
@@ -35,8 +32,7 @@ describe Chess::Piece do
       subject(:piece_white) { described_class.new(:white) }
 
       it 'returns false' do
-        result = piece_white.black?
-        expect(result).to be(false)
+        expect(piece_white.black?).to be(false)
       end
     end
   end
@@ -45,8 +41,7 @@ describe Chess::Piece do
     subject(:piece) { described_class.new(:white) }
 
     it 'returns a string describing the state' do
-      result = piece.to_s
-      expect(result).to eq('The Piece is white.')
+      expect(piece.to_s).to eq('The Piece is white.')
     end
   end
 end

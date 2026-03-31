@@ -276,18 +276,4 @@ describe Chess::Pawn do
       end
     end
   end
-
-  describe '#promote' do
-    subject(:pawn) { described_class.new(:white) }
-
-    it 'returns a new Piece based on the passed arg' do
-      result = pawn.promote(Chess::Queen)
-      expect(result).to be_a(Chess::Queen)
-    end
-
-    it 'returns a new Piece with this Pawn\'s color' do
-      result = pawn.promote(Chess::Queen)
-      expect(result.color).to eq(pawn.color)
-    end
-  end
 end

@@ -5,17 +5,6 @@ module Chess
   class Coord
     attr_reader :file, :rank
 
-    COORD_METHOD_MAP = {
-      north: :to_northern_adjacencies,
-      east: :to_eastern_adjacencies,
-      south: :to_southern_adjacencies,
-      west: :to_western_adjacencies,
-      north_east: :to_north_eastern_adjacencies,
-      south_east: :to_south_eastern_adjacencies,
-      south_west: :to_south_western_adjacencies,
-      north_west: :to_north_western_adjacencies
-    }.freeze
-
     # @param file [String] the file coordinate between a and h
     # @param rank [Integer] the rank coordinate between 1 and 8
     def initialize(file, rank)
@@ -48,7 +37,7 @@ module Chess
       return unless adjustment_in_bounds?(file_adjustment, rank_adjustment)
 
       adjacent_file_idx = file_to_i + file_adjustment - 1
-      adjacent_file = ChessConstants::BOARD_FILE_MARKERS[adjacent_file_idx]
+      adjacent_file = BOARD_FILE_MARKERS[adjacent_file_idx]
       adjacent_rank = @rank + rank_adjustment
       Coord.new(adjacent_file, adjacent_rank)
     end
@@ -91,7 +80,7 @@ module Chess
     end
 
     def file_to_i
-      ChessConstants::BOARD_FILE_MARKERS.index(@file) + 1
+      BOARD_FILE_MARKERS.index(@file) + 1
     end
 
     def to_s
@@ -117,12 +106,12 @@ module Chess
 
     def file_adjustment_in_bounds?(file_adjustment)
       adjusted = file_to_i + file_adjustment
-      adjusted.between?(1, ChessConstants::BOARD_FILE_MARKERS.length)
+      adjusted.between?(1, BOARD_FILE_MARKERS.length)
     end
 
     def rank_adjustment_in_bounds?(rank_adjustment)
       adjusted = @rank + rank_adjustment
-      adjusted.between?(1, ChessConstants::BOARD_RANK_MARKERS.length)
+      adjusted.between?(1, BOARD_RANK_MARKERS.length)
     end
   end
 end

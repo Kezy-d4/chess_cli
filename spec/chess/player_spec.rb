@@ -6,8 +6,7 @@ describe Chess::Player do
       subject(:player_white) { described_class.new('Player', :white) }
 
       it 'returns true' do
-        result = player_white.white?
-        expect(result).to be(true)
+        expect(player_white.white?).to be(true)
       end
     end
 
@@ -15,8 +14,7 @@ describe Chess::Player do
       subject(:player_black) { described_class.new('Player', :black) }
 
       it 'returns false' do
-        result = player_black.white?
-        expect(result).to be(false)
+        expect(player_black.white?).to be(false)
       end
     end
   end
@@ -26,8 +24,7 @@ describe Chess::Player do
       subject(:player_black) { described_class.new('Player', :black) }
 
       it 'returns true' do
-        result = player_black.black?
-        expect(result).to be(true)
+        expect(player_black.black?).to be(true)
       end
     end
 
@@ -35,8 +32,7 @@ describe Chess::Player do
       subject(:player_white) { described_class.new('Player', :white) }
 
       it 'returns false' do
-        result = player_white.black?
-        expect(result).to be(false)
+        expect(player_white.black?).to be(false)
       end
     end
   end
@@ -45,8 +41,7 @@ describe Chess::Player do
     subject(:player) { described_class.new('Player', :white) }
 
     it 'returns a string describing the state' do
-      result = player.to_s
-      expect(result).to eq('Player(white)')
+      expect(player.to_s).to eq('Player(white)')
     end
   end
 end

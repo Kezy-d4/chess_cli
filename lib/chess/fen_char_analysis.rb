@@ -5,11 +5,11 @@ module Chess
   # chess FEN record
   module FENCharAnalysis
     def char_represents_white_piece?(char)
-      ChessConstants::FEN_CHARS[:white].value?(char)
+      FEN_CHARS[:white].value?(char)
     end
 
     def char_represents_black_piece?(char)
-      ChessConstants::FEN_CHARS[:black].value?(char)
+      FEN_CHARS[:black].value?(char)
     end
 
     def char_represents_piece?(char)
