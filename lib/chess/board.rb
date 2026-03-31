@@ -73,7 +73,7 @@ module Chess
       square_at(coord).vacant?
     end
 
-    def to_occupied_associations(color)
+    def to_occupied_locations(color)
       @squares.select do |_coord, square|
         square.occupied? && square.occupant.color == color
       end

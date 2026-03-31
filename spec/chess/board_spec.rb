@@ -194,7 +194,7 @@ describe Chess::Board do
     end
   end
 
-  describe '#to_occupied_associations' do
+  describe '#to_occupied_locations' do
     subject(:board_default) do
       fen_parser_default = Chess::FENParser.new(Chess::DEFAULT_FEN)
       described_class.from_fen_parser(fen_parser_default)
@@ -223,7 +223,7 @@ describe Chess::Board do
       end
 
       it 'returns a hash containing only white-occupied associations' do
-        result = board_default.to_occupied_associations(:white)
+        result = board_default.to_occupied_locations(:white)
         result = result.transform_keys(&:to_s)
         result = result.transform_values(&:to_s)
         expect(result).to eq(expected)
@@ -253,7 +253,7 @@ describe Chess::Board do
       end
 
       it 'returns a hash containing only black-occupied associations' do
-        result = board_default.to_occupied_associations(:black)
+        result = board_default.to_occupied_locations(:black)
         result = result.transform_keys(&:to_s)
         result = result.transform_values(&:to_s)
         expect(result).to eq(expected)
