@@ -12,7 +12,7 @@ module Chess
     class << self
       # @param fen_parser [FENParser]
       def from_fen_parser(fen_parser)
-        data_fields = fen_parser.to_data_fields
+        data_fields = fen_parser.to_parsed_data_fields
         data_fields.delete(:piece_placement)
         new(data_fields)
       end

@@ -14,7 +14,7 @@ describe Chess::AuxPosData do
       end
 
       it 'returns an AuxPosData with the expected state' do
-        fen_default = Chess::ChessConstants::FEN_DEFAULT
+        fen_default = Chess::DEFAULT_FEN
         fen_parser_default = Chess::FENParser.new(fen_default)
         result = described_class.from_fen_parser(fen_parser_default)
         data_fields = result.instance_variable_get(:@data_fields)
