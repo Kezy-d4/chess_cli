@@ -4,7 +4,7 @@ module Chess
   # A mixin to construct chess pieces from their corresponding FEN character and
   # convert existing pieces into said character
   module Pieces
-    include FENCharAnalysis
+    include FENCharAnalyzer
 
     def construct_piece_from_char(char)
       if char_represents_white_piece?(char)

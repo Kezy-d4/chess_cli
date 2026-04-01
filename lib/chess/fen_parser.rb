@@ -3,7 +3,7 @@
 module Chess
   # Parses a chess FEN record
   class FENParser
-    include FENCharAnalysis
+    include FENCharAnalyzer
 
     # @param fen [String] the valid FEN record
     def initialize(fen)

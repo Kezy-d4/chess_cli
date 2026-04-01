@@ -3,7 +3,7 @@
 module Chess
   # A mixin to analyze the characters within the piece placement data field of a
   # chess FEN record
-  module FENCharAnalysis
+  module FENCharAnalyzer
     def char_represents_white_piece?(char)
       FEN_CHARS[:white].value?(char)
     end

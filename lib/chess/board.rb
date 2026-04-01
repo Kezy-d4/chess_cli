@@ -4,7 +4,7 @@ module Chess
   # A chess board
   class Board
     extend Pieces
-    extend FENCharAnalysis
+    extend FENCharAnalyzer
 
     using NumericExtensions
     using HashExtensions
