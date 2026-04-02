@@ -20,6 +20,14 @@ module Chess
       @color == :black
     end
 
+    def friendly_with?(other)
+      @color == other.color
+    end
+
+    def enemy_to?(other)
+      @color != other.color
+    end
+
     def to_s
       "The #{to_class_s} is #{@color}."
     end
