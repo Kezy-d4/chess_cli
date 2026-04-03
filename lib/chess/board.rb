@@ -81,8 +81,8 @@ module Chess
 
     def to_ranks
       vals = @squares.values
-      BOARD_RANK_MARKERS.each_with_object({}) do |rank_i, hash|
-        rank = vals.slice!(0, BOARD_FILE_MARKERS.length)
+      Chess::BOARD_RANK_MARKERS.each_with_object({}) do |rank_i, hash|
+        rank = vals.slice!(0, Chess::BOARD_FILE_MARKERS.length)
         hash[rank_i] = rank
       end
     end

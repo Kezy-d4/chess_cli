@@ -8,17 +8,17 @@ module Chess
 
     def construct_piece_from_char(char)
       if char_represents_white_piece?(char)
-        FEN_CHAR_PIECE_MAP[:white][char].new(:white)
+        Chess::FEN_CHAR_PIECE_MAP[:white][char].new(:white)
       elsif char_represents_black_piece?(char)
-        FEN_CHAR_PIECE_MAP[:black][char].new(:black)
+        Chess::FEN_CHAR_PIECE_MAP[:black][char].new(:black)
       end
     end
 
     def convert_piece_to_char(piece)
       if piece.white?
-        PIECE_FEN_CHAR_MAP[:white][piece.class]
+        Chess::PIECE_FEN_CHAR_MAP[:white][piece.class]
       elsif piece.black?
-        PIECE_FEN_CHAR_MAP[:black][piece.class]
+        Chess::PIECE_FEN_CHAR_MAP[:black][piece.class]
       end
     end
   end

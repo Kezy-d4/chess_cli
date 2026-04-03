@@ -6,7 +6,7 @@ module Chess
     using HashExtensions
 
     def to_adjacent_movement_coords(coord)
-      COORD_METHOD_MAP
+      Chess::COORD_METHOD_MAP
         .slice(:north, :east, :south, :west)
         .transform_values { |method_name| coord.public_send(method_name) }
         .delete_empty_arr_vals

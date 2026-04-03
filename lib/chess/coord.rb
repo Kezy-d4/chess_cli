@@ -37,7 +37,7 @@ module Chess
       return unless adjustment_in_bounds?(file_adjustment, rank_adjustment)
 
       adjacent_file_idx = file_to_i + file_adjustment - 1
-      adjacent_file = BOARD_FILE_MARKERS[adjacent_file_idx]
+      adjacent_file = Chess::BOARD_FILE_MARKERS[adjacent_file_idx]
       adjacent_rank = @rank + rank_adjustment
       Coord.new(adjacent_file, adjacent_rank)
     end
@@ -80,7 +80,7 @@ module Chess
     end
 
     def file_to_i
-      BOARD_FILE_MARKERS.index(@file) + 1
+      Chess::BOARD_FILE_MARKERS.index(@file) + 1
     end
 
     def to_s
@@ -106,12 +106,12 @@ module Chess
 
     def file_adjustment_in_bounds?(file_adjustment)
       adjusted = file_to_i + file_adjustment
-      adjusted.between?(1, BOARD_FILE_MARKERS.length)
+      adjusted.between?(1, Chess::BOARD_FILE_MARKERS.length)
     end
 
     def rank_adjustment_in_bounds?(rank_adjustment)
       adjusted = @rank + rank_adjustment
-      adjusted.between?(1, BOARD_RANK_MARKERS.length)
+      adjusted.between?(1, Chess::BOARD_RANK_MARKERS.length)
     end
   end
 end

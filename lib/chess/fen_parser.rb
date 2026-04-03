@@ -34,7 +34,7 @@ module Chess
 
     def rank_a_to_rank_a_with_coords(rank_a, rank_i)
       rank_a.map.with_index do |char, idx|
-        file = BOARD_FILE_MARKERS[idx]
+        file = Chess::BOARD_FILE_MARKERS[idx]
         rank = rank_i
         coord_s = "#{file}#{rank}"
         [coord_s, char]
