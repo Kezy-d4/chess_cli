@@ -8,5 +8,11 @@ module HashExtensions
 
       delete_if { |_key, arr| arr.compact.empty? }
     end
+
+    def wrap_vals_in_arr
+      return unless values.none?(Array)
+
+      transform_values { |val| [val] }
+    end
   end
 end
