@@ -20,6 +20,7 @@ module Chess
   require_relative 'chess/pieces'
   require_relative 'chess/board'
   require_relative 'chess/aux_pos_data'
+  require_relative 'chess/special_move_analyzer'
   require_relative 'chess/position'
   require_relative 'chess/display'
   require_relative 'chess/log'
