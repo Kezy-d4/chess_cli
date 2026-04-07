@@ -194,6 +194,31 @@ describe Chess::Board do
     end
   end
 
+  describe '#pawn_at?' do
+    subject(:board_default) do
+      fen_parser_default = Chess::FENParser.new(Chess::DEFAULT_FEN)
+      described_class.from_fen_parser(fen_parser_default)
+    end
+
+    context 'when occupied by a pawn at the given Coord' do
+      it 'returns true' do
+        expect(board_default.pawn_at?(Chess::Coord.from_s('e7'))).to be(true)
+      end
+    end
+
+    context 'when not occupied by a pawn at the given Coord' do
+      it 'returns false' do
+        expect(board_default.pawn_at?(Chess::Coord.from_s('e1'))).to be(false)
+      end
+    end
+
+    context 'when vacant at the given Coord' do
+      it 'returns false' do
+        expect(board_default.pawn_at?(Chess::Coord.from_s('e4'))).to be(false)
+      end
+    end
+  end
+
   describe '#to_occupied_locations' do
     subject(:board_default) do
       fen_parser_default = Chess::FENParser.new(Chess::DEFAULT_FEN)

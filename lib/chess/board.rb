@@ -73,6 +73,12 @@ module Chess
       square_at(coord).vacant?
     end
 
+    def pawn_at?(source)
+      return false unless occupied_at?(source)
+
+      occupant_at(source).is_a?(Pawn)
+    end
+
     def to_occupied_locations(color)
       @squares.select do |_coord, square|
         square.occupied? && square.occupant.color == color
