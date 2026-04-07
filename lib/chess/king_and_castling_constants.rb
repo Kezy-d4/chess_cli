@@ -30,5 +30,13 @@ module Chess
     BLACK_KINGSIDE_CASTLE_PATH = [Coord.from_s('e8'), Coord.from_s('f8'), Coord.from_s('g8')].freeze
 
     BLACK_QUEENSIDE_CASTLE_PATH = [Coord.from_s('e8'), Coord.from_s('d8'), Coord.from_s('c8')].freeze
+
+    WHITE_KINGSIDE_CASTLE_SPACE = [Coord.from_s('f1'), Coord.from_s('g1')].freeze
+
+    WHITE_QUEENSIDE_CASTLE_SPACE = [Coord.from_s('d1'), Coord.from_s('c1'), Coord.from_s('b1')].freeze
+
+    BLACK_KINGSIDE_CASTLE_SPACE = [Coord.from_s('f8'), Coord.from_s('g8')].freeze
+
+    BLACK_QUEENSIDE_CASTLE_SPACE = [Coord.from_s('d8'), Coord.from_s('c8'), Coord.from_s('b8')].freeze
   end
 end
