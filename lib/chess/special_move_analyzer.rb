@@ -4,6 +4,7 @@ module Chess
   # Analyzes special moves such as castling, en passant capture and promotion in
   # the context of a chess position
   class SpecialMoveAnalyzer
+    # @param position [Position]
     def initialize(position)
       @position = position
     end
@@ -11,6 +12,17 @@ module Chess
     def en_passant_attack?(source, destination)
       @position.board.pawn_at?(source) &&
         destination.to_s == @position.aux_pos_data.access_en_passant_target
+    end
+
+    def to_en_passant_capture_coord
+      return '-' unless @position.aux_pos_data.en_passant_target_available?
+
+      target = Coord.from_s(@position.aux_pos_data.access_en_passant_target)
+      if target.rank == Chess::WHITE_EN_PASSANT_RANK
+        target.to_adjacency(0, 1)
+      elsif target.rank == Chess::BLACK_EN_PASSANT_RANK
+        target.to_adjacency(0, -1)
+      end
     end
 
     def move_to_promote?(source, destination)
@@ -29,9 +41,9 @@ module Chess
 
       king = @position.board.occupant_at(source)
       if king.white?
-        to_legal_white_king_castle_destinations
+        to_legal_white_castle_destinations
       elsif king.black?
-        to_legal_black_king_castle_destinations
+        to_legal_black_castle_destinations
       end
     end
 
@@ -49,14 +61,14 @@ module Chess
 
     private
 
-    def to_legal_white_king_castle_destinations
+    def to_legal_white_castle_destinations
       arr = []
       arr << Chess::WHITE_KINGSIDE_CASTLE_PATH.last if kingside_castle_legal?(:white)
       arr << Chess::WHITE_QUEENSIDE_CASTLE_PATH.last if queenside_castle_legal?(:white)
       arr
     end
 
-    def to_legal_black_king_castle_destinations
+    def to_legal_black_castle_destinations
       arr = []
       arr << Chess::BLACK_KINGSIDE_CASTLE_PATH.last if kingside_castle_legal?(:black)
       arr << Chess::BLACK_QUEENSIDE_CASTLE_PATH.last if queenside_castle_legal?(:black)
