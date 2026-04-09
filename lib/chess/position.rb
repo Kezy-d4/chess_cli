@@ -55,7 +55,7 @@ module Chess
     # is one that a piece can move to without capturing an enemy piece.
     def to_controlled_destinations_from(source)
       (to_partial_controlled_destinations_from(source) <<
-        SpecialMoveAnalyzer.new(self).to_castle_destinations_from(source)).flatten
+        SpecialMoveAnalyzer.new(self).to_legal_castle_destinations_from(source)).flatten
     end
 
     def to_attacked_destinations_by(color)

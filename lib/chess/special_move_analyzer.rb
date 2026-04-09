@@ -24,7 +24,7 @@ module Chess
       end
     end
 
-    def to_castle_destinations_from(source)
+    def to_legal_castle_destinations_from(source)
       return [] unless @position.board.occupant_at(source).is_a?(King)
 
       king = @position.board.occupant_at(source)
