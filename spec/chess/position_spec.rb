@@ -67,6 +67,11 @@ describe Chess::Position do
           .to match_array(%w[c6].map { |coord_s| Chess::Coord.from_s(coord_s) })
       end
 
+      example 'source c6' do
+        expect(position_mid.to_attacked_destinations_from(Chess::Coord.from_s('c6')))
+          .to match_array(%w[b5].map { |coord_s| Chess::Coord.from_s(coord_s) })
+      end
+
       example 'source c1' do
         expect(position_mid.to_attacked_destinations_from(Chess::Coord.from_s('c1')))
           .to match_array(%w[f4].map { |coord_s| Chess::Coord.from_s(coord_s) })
@@ -81,41 +86,10 @@ describe Chess::Position do
         expect(position_mid.to_attacked_destinations_from(Chess::Coord.from_s('b8')))
           .to be_an(Array).and be_empty
       end
-    end
-
-    context 'with a position where a white pawn is en passant vulnerable' do
-      subject(:position_white_en_passant) do
-        fen = 'rnbqkb1r/pppp1ppp/8/8/3npP2/3P4/PPP1P1PP/RNBQKBNR b KQkq f3 0 8'
-        fen_parser = Chess::FENParser.new(fen)
-        described_class.from_fen_parser(fen_parser)
-      end
-
-      example 'source e4' do
-        expect(position_white_en_passant.to_attacked_destinations_from(Chess::Coord.from_s('e4')))
-          .to match_array(%w[d3 f3].map { |coord_s| Chess::Coord.from_s(coord_s) })
-      end
-
-      example 'source d4' do
-        expect(position_white_en_passant.to_attacked_destinations_from(Chess::Coord.from_s('d4')))
-          .to match_array(%w[c2 e2].map { |coord_s| Chess::Coord.from_s(coord_s) })
-      end
-    end
-
-    context 'with a position where a black pawn is en passant vulnerable' do
-      subject(:position_black_en_passant) do
-        fen = 'rnbqkb1r/ppp1p1pp/3p3n/4Pp2/4N3/8/PPPP1PPP/RNBQKB1R w KQkq f6 0 6'
-        fen_parser = Chess::FENParser.new(fen)
-        described_class.from_fen_parser(fen_parser)
-      end
 
       example 'source e5' do
-        expect(position_black_en_passant.to_attacked_destinations_from(Chess::Coord.from_s('e5')))
-          .to match_array(%w[d6 f6].map { |coord_s| Chess::Coord.from_s(coord_s) })
-      end
-
-      example 'source e4' do
-        expect(position_black_en_passant.to_attacked_destinations_from(Chess::Coord.from_s('e4')))
-          .to match_array(%w[d6].map { |coord_s| Chess::Coord.from_s(coord_s) })
+        expect(position_mid.to_attacked_destinations_from(Chess::Coord.from_s('e5')))
+          .to be_an(Array).and be_empty
       end
     end
   end
@@ -175,50 +149,6 @@ describe Chess::Position do
           .to be_an(Array).and be_empty
       end
     end
-
-    context 'with a position where all castles are possible' do
-      subject(:position_full_castle) do
-        fen = 'r3k2r/ppp2ppp/n6n/2bppbq1/2BPPBQ1/N6N/PPP2PPP/R3K2R w KQkq - 4 8'
-        fen_parser = Chess::FENParser.new(fen)
-        described_class.from_fen_parser(fen_parser)
-      end
-
-      example 'source e1' do
-        expect(position_full_castle.to_controlled_destinations_from(Chess::Coord.from_s('e1')))
-          .to match_array(
-            %w[e2 d2 d1 c1 f1 g1].map { |coord_s| Chess::Coord.from_s(coord_s) }
-          )
-      end
-
-      example 'source e8' do
-        expect(position_full_castle.to_controlled_destinations_from(Chess::Coord.from_s('e8')))
-          .to match_array(
-            %w[e7 d7 d8 c8 f8 g8].map { |coord_s| Chess::Coord.from_s(coord_s) }
-          )
-      end
-    end
-
-    context 'with a position where some castles are possible' do
-      subject(:position_partial_castle) do
-        fen = 'r3k2r/ppqbbppp/n1ppp3/8/2Q5/N1nPPB2/PPPB1PPP/R3K1NR b KQk - 3 22'
-        fen_parser = Chess::FENParser.new(fen)
-        described_class.from_fen_parser(fen_parser)
-      end
-
-      example 'source e1' do
-        expect(position_partial_castle.to_controlled_destinations_from(Chess::Coord.from_s('e1')))
-          .to match_array(
-            %w[f1 d1 e2].map { |coord_s| Chess::Coord.from_s(coord_s) }
-          )
-      end
-
-      example 'source e8' do
-        expect(position_partial_castle.to_controlled_destinations_from(Chess::Coord.from_s('e8')))
-          .to match_array(
-            %w[d8 f8 g8].map { |coord_s| Chess::Coord.from_s(coord_s) }
-          )
-      end
-    end
   end
 
   describe '#to_attacked_destinations_by' do
@@ -229,7 +159,7 @@ describe Chess::Position do
     end
 
     context 'with a white color' do
-      it 'returns an array of all destinations attacked by white' do
+      it 'returns an array of all unique destinations attacked by white' do
         expect(position_mid.to_attacked_destinations_by(:white)).to match_array(
           %w[c6 g7 f4].map { |coord_s| Chess::Coord.from_s(coord_s) }
         )
@@ -237,7 +167,7 @@ describe Chess::Position do
     end
 
     context 'with a black color' do
-      it 'returns an array of all destinations attacked by black' do
+      it 'returns an array of all unique destinations attacked by black' do
         expect(position_mid.to_attacked_destinations_by(:black)).to match_array(
           %w[b5 e4 g4 f5].map { |coord_s| Chess::Coord.from_s(coord_s) }
         )
@@ -253,7 +183,7 @@ describe Chess::Position do
     end
 
     context 'with a white color' do
-      it 'returns an array of all destinations controlled by white' do
+      it 'returns an array of all unique destinations controlled by white' do
         expect(position_mid.to_controlled_destinations_by(:white)).to match_array(
           %w[
             a6 a4 c4 d6 e7 h6 h4 g3 e3 d4 e5 a3 b3 b4 c3 h3 d2 e1 e2 f3 f2 g2 h1
@@ -263,7 +193,7 @@ describe Chess::Position do
     end
 
     context 'with a black color' do
-      it 'returns an array of all destinations controlled by black' do
+      it 'returns an array of all unique destinations controlled by black' do
         expect(position_mid.to_controlled_destinations_by(:black)).to match_array(
           %w[
             f3 h4 h5 h6 g6 c5 d5 g8 a6 a5 d6 b7 d8 e7 b4 a3
@@ -276,8 +206,8 @@ describe Chess::Position do
   describe '#to_active_color' do
     context 'when white is active' do
       subject(:position_white) do
-        fen_parser_default = Chess::FENParser.new(Chess::DEFAULT_FEN)
-        described_class.from_fen_parser(fen_parser_default)
+        fen_parser = Chess::FENParser.new(Chess::DEFAULT_FEN)
+        described_class.from_fen_parser(fen_parser)
       end
 
       it 'returns a white symbol' do
@@ -301,8 +231,8 @@ describe Chess::Position do
   describe '#to_inactive_color' do
     context 'when white is active' do
       subject(:position_white) do
-        fen_parser_default = Chess::FENParser.new(Chess::DEFAULT_FEN)
-        described_class.from_fen_parser(fen_parser_default)
+        fen_parser = Chess::FENParser.new(Chess::DEFAULT_FEN)
+        described_class.from_fen_parser(fen_parser)
       end
 
       it 'returns a black symbol' do
@@ -323,29 +253,10 @@ describe Chess::Position do
     end
   end
 
-  describe '#to_king_source' do
-    subject(:position) do
-      fen_parser_default = Chess::FENParser.new(Chess::DEFAULT_FEN)
-      described_class.from_fen_parser(fen_parser_default)
-    end
-
-    context 'with a white color' do
-      it 'returns the source of the white king' do
-        expect(position.to_king_source(:white)).to eq(Chess::Coord.from_s('e1'))
-      end
-    end
-
-    context 'with a black color' do
-      it 'returns the source of the black king' do
-        expect(position.to_king_source(:black)).to eq(Chess::Coord.from_s('e8'))
-      end
-    end
-  end
-
   describe '#to_all_sources' do
     subject(:position) do
-      fen_parser_default = Chess::FENParser.new(Chess::DEFAULT_FEN)
-      described_class.from_fen_parser(fen_parser_default)
+      fen_parser = Chess::FENParser.new(Chess::DEFAULT_FEN)
+      described_class.from_fen_parser(fen_parser)
     end
 
     context 'with a white color' do
@@ -369,30 +280,26 @@ describe Chess::Position do
     end
   end
 
-  describe '#all_sources_vacant?' do
+  describe '#to_king_source' do
     subject(:position) do
-      fen_parser_default = Chess::FENParser.new(Chess::DEFAULT_FEN)
-      described_class.from_fen_parser(fen_parser_default)
+      fen_parser = Chess::FENParser.new(Chess::DEFAULT_FEN)
+      described_class.from_fen_parser(fen_parser)
     end
 
-    context 'when all of the given sources are vacant' do
-      let(:sources) { [Chess::Coord.from_s('e3'), Chess::Coord.from_s('e4')] }
-
-      it 'returns true' do
-        expect(position.all_sources_vacant?(sources)).to be(true)
+    context 'with a white color' do
+      it 'returns the source of the white king' do
+        expect(position.to_king_source(:white)).to eq(Chess::Coord.from_s('e1'))
       end
     end
 
-    context 'when one or more of the given sources are occupied' do
-      let(:sources) { [Chess::Coord.from_s('e2'), Chess::Coord.from_s('e3')] }
-
-      it 'returns false' do
-        expect(position.all_sources_vacant?(sources)).to be(false)
+    context 'with a black color' do
+      it 'returns the source of the black king' do
+        expect(position.to_king_source(:black)).to eq(Chess::Coord.from_s('e8'))
       end
     end
   end
 
-  describe '#all_sources_free_from_enemy_control' do
+  describe '#all_sources_free_from_enemy_control?' do
     subject(:position_mid) do
       fen = 'rnb1kb1r/p2p1ppp/2p2n2/1B3Nq1/4PpP1/3P4/PPP4P/RNBQ1KR1 b kq - 2 11'
       fen_parser = Chess::FENParser.new(fen)
@@ -420,11 +327,34 @@ describe Chess::Position do
     end
   end
 
+  describe '#all_sources_vacant?' do
+    subject(:position) do
+      fen_parser = Chess::FENParser.new(Chess::DEFAULT_FEN)
+      described_class.from_fen_parser(fen_parser)
+    end
+
+    context 'when all of the given sources are vacant' do
+      let(:sources) { [Chess::Coord.from_s('e3'), Chess::Coord.from_s('e4')] }
+
+      it 'returns true' do
+        expect(position.all_sources_vacant?(sources)).to be(true)
+      end
+    end
+
+    context 'when one or more of the given sources are occupied' do
+      let(:sources) { [Chess::Coord.from_s('e2'), Chess::Coord.from_s('e3')] }
+
+      it 'returns false' do
+        expect(position.all_sources_vacant?(sources)).to be(false)
+      end
+    end
+  end
+
   describe '#to_fen' do
     context 'with a default position' do
       subject(:position_default) do
-        fen_parser_default = Chess::FENParser.new(Chess::DEFAULT_FEN)
-        described_class.from_fen_parser(fen_parser_default)
+        fen_parser = Chess::FENParser.new(Chess::DEFAULT_FEN)
+        described_class.from_fen_parser(fen_parser)
       end
 
       it 'returns the default fen record' do

@@ -27,35 +27,35 @@ module Chess
       to_attacked_destinations_by(to_inactive_color).include?(to_king_source(to_active_color))
     end
 
-    # This method returns a complete array of attacked destinations from a given
-    # source, including legal en passant destinations. An attacked destination
-    # is one that a piece can move to while capturing an enemy piece.
-    # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    # Returns an array of all attacked destinations from a given source. An
+    # attacked destination is one that the source piece could move to and
+    # capture an enemy piece. The method does not account for potential en
+    # passant attacks.
     def to_attacked_destinations_from(source)
       return [] unless @board.occupied_at?(source)
 
       piece = @board.occupant_at(source)
       piece.to_adjacent_capture_coords(source).transform_values { |adjacent_coord_a|
-        if SpecialMoveAnalyzer.new(self).en_passant_attack?(source, adjacent_coord_a.first)
-          adjacent_coord_a.first
-        else
-          adjacent_coord_a.find do |adjacent_coord|
-            next if @board.vacant_at?(adjacent_coord)
-            break if @board.occupant_at(adjacent_coord).friendly_with?(piece)
+        adjacent_coord_a.find do |adjacent_coord|
+          next if @board.vacant_at?(adjacent_coord)
+          break if @board.occupant_at(adjacent_coord).friendly_with?(piece)
 
-            @board.occupant_at(adjacent_coord).enemy_to?(piece)
-          end
+          @board.occupant_at(adjacent_coord).enemy_to?(piece)
         end
       }.wrap_vals_in_arr.delete_empty_arr_vals.values.flatten
     end
-    # rubocop: enable all
 
-    # This method returns a complete array of controlled destinations from a
-    # given source, including legal castle destinations. A controlled destination
-    # is one that a piece can move to without capturing an enemy piece.
+    # Returns an array of all controlled destinations from a given source. A
+    # controlled destination is one that the source piece could move to without
+    # capturing an enemy piece. The method does not account for potential
+    # castling destinations.
     def to_controlled_destinations_from(source)
-      (to_partial_controlled_destinations_from(source) <<
-        SpecialMoveAnalyzer.new(self).to_legal_castle_destinations_from(source)).flatten
+      return [] unless @board.occupied_at?(source)
+
+      piece = @board.occupant_at(source)
+      piece.to_adjacent_movement_coords(source).transform_values { |adjacent_coord_a|
+        adjacent_coord_a.take_while { |adjacent_coord| @board.vacant_at?(adjacent_coord) }
+      }.delete_empty_arr_vals.values.flatten
     end
 
     def to_attacked_destinations_by(color)
@@ -86,28 +86,26 @@ module Chess
       end
     end
 
-    def to_king_source(color)
-      to_all_sources(color).find { |coord| @board.occupant_at(coord).is_a?(King) }
-    end
-
     def to_all_sources(color)
       @board.to_occupied_locations(color).keys
     end
 
-    def all_sources_vacant?(sources)
-      sources.all? { |source| @board.vacant_at?(source) }
+    def to_king_source(color)
+      to_all_sources(color).find { |source| @board.occupant_at(source).is_a?(King) }
     end
 
-    # This method uses #to_partial_controlled_destinations_by to avoid infinite
-    # loops related to the castling logic in SpecialMoveAnalyzer.
     def all_sources_free_from_enemy_control?(sources, color)
       sources.all? do |source|
         if color == :white
-          !to_partial_controlled_destinations_by(:black).include?(source)
+          !to_controlled_destinations_by(:black).include?(source)
         elsif color == :black
-          !to_partial_controlled_destinations_by(:white).include?(source)
+          !to_controlled_destinations_by(:white).include?(source)
         end
       end
+    end
+
+    def all_sources_vacant?(sources)
+      sources.all? { |source| @board.vacant_at?(source) }
     end
 
     def to_fen
@@ -116,33 +114,6 @@ module Chess
 
     def clone
       Marshal.load(Marshal.dump(self))
-    end
-
-    private
-
-    # This method returns a partial array of controlled destinations from a
-    # given source. A controlled destination is one that a piece can move to
-    # without capturing an enemy piece. The array is partial in the sense that
-    # it does not include any potential castling destinations. Public method
-    # #to_controlled_destinations_from returns the complete array and should
-    # always be called instead. It is necessary to separate the algorithm in
-    # this way to avoid infinite loops related to the castling logic in
-    # SpecialMoveAnalyzer.
-    def to_partial_controlled_destinations_from(source)
-      return [] unless @board.occupied_at?(source)
-
-      piece = @board.occupant_at(source)
-      piece.to_adjacent_movement_coords(source).transform_values { |adjacent_coord_a|
-        adjacent_coord_a.take_while do |adjacent_coord|
-          @board.vacant_at?(adjacent_coord)
-        end
-      }.delete_empty_arr_vals.values.flatten
-    end
-
-    def to_partial_controlled_destinations_by(color)
-      to_all_sources(color).map { |source|
-        to_partial_controlled_destinations_from(source)
-      }.flatten.uniq
     end
   end
 end
