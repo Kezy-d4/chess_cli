@@ -70,6 +70,12 @@ module Chess
       }.flatten.uniq
     end
 
+    def move_would_leave_active_color_in_check?(source, destination)
+      clone = self.clone
+      clone.board.move_piece(source, destination)
+      clone.check?
+    end
+
     def to_active_color
       if @aux_pos_data.white_has_the_move?
         :white

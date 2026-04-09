@@ -203,6 +203,34 @@ describe Chess::Position do
     end
   end
 
+  describe '#move_would_leave_active_color_in_check?' do
+    subject(:position_mid) do
+      fen = 'rnb1kb1r/p1pp1ppp/5n2/1B6/4Pp1q/5N2/PPPP2PP/RNBQ1K1R b kq - 2 6'
+      fen_parser = Chess::FENParser.new(fen)
+      described_class.from_fen_parser(fen_parser)
+    end
+
+    context 'when the move would leave the active color in check' do
+      let(:source) { Chess::Coord.from_s('d7') }
+      let(:destination) { Chess::Coord.from_s('d6') }
+
+      it 'returns true' do
+        expect(position_mid.move_would_leave_active_color_in_check?(source, destination))
+          .to be(true)
+      end
+    end
+
+    context 'when the move would not leave the active color in check' do
+      let(:source) { Chess::Coord.from_s('h4') }
+      let(:destination) { Chess::Coord.from_s('h6') }
+
+      it 'returns false' do
+        expect(position_mid.move_would_leave_active_color_in_check?(source, destination))
+          .to be(false)
+      end
+    end
+  end
+
   describe '#to_active_color' do
     context 'when white is active' do
       subject(:position_white) do
