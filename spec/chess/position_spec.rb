@@ -327,6 +327,34 @@ describe Chess::Position do
     end
   end
 
+  describe '#all_sources_free_from_enemy_attack?' do
+    subject(:position_mid) do
+      fen = 'rnb1kb1r/p2p1ppp/2p2n2/1B3Nq1/4PpP1/3P4/PPP4P/RNBQ1KR1 b kq - 2 11'
+      fen_parser = Chess::FENParser.new(fen)
+      described_class.from_fen_parser(fen_parser)
+    end
+
+    context 'when all of the given sources are free from enemy attack' do
+      let(:sources) { [Chess::Coord.from_s('h5'), Chess::Coord.from_s('h6')] }
+      let(:color) { :black }
+
+      it 'returns true' do
+        expect(position_mid.all_sources_free_from_enemy_attack?(sources, color))
+          .to be(true)
+      end
+    end
+
+    context 'when one or more of the given sources are under enemy attack' do
+      let(:sources) { [Chess::Coord.from_s('h6'), Chess::Coord.from_s('g7')] }
+      let(:color) { :black }
+
+      it 'returns false' do
+        expect(position_mid.all_sources_free_from_enemy_attack?(sources, color))
+          .to be(false)
+      end
+    end
+  end
+
   describe '#all_sources_free_from_enemy_control?' do
     subject(:position_mid) do
       fen = 'rnb1kb1r/p2p1ppp/2p2n2/1B3Nq1/4PpP1/3P4/PPP4P/RNBQ1KR1 b kq - 2 11'

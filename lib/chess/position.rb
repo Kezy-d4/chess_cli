@@ -100,6 +100,16 @@ module Chess
       to_all_sources(color).find { |source| @board.occupant_at(source).is_a?(King) }
     end
 
+    def all_sources_free_from_enemy_attack?(sources, color)
+      sources.all? do |source|
+        if color == :white
+          !to_attacked_destinations_by(:black).include?(source)
+        elsif color == :black
+          !to_attacked_destinations_by(:white).include?(source)
+        end
+      end
+    end
+
     def all_sources_free_from_enemy_control?(sources, color)
       sources.all? do |source|
         if color == :white
