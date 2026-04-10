@@ -18,9 +18,9 @@ module Chess
       return '-' unless @position.aux_pos_data.en_passant_target_available?
 
       target = Coord.from_s(@position.aux_pos_data.access_en_passant_target)
-      if target.rank == Chess::WHITE_EN_PASSANT_RANK
+      if target.rank == Chess::WHITE_EN_PASSANT_VULNERABLE_RANK
         target.to_adjacency(0, 1)
-      elsif target.rank == Chess::BLACK_EN_PASSANT_RANK
+      elsif target.rank == Chess::BLACK_EN_PASSANT_VULNERABLE_RANK
         target.to_adjacency(0, -1)
       end
     end
