@@ -86,17 +86,21 @@ module Chess
 
     def kingside_castle_path_free_from_enemy_control?(color)
       if color == :white
-        @position.all_sources_free_from_enemy_control?(Chess::WHITE_KINGSIDE_CASTLE_PATH, color)
+        @position.all_sources_free_from_enemy_control?(Chess::WHITE_KINGSIDE_CASTLE_PATH[1..], color) &&
+          @position.all_sources_free_from_enemy_attack?([Chess::WHITE_KINGSIDE_CASTLE_PATH.first], color)
       elsif color == :black
-        @position.all_sources_free_from_enemy_control?(Chess::BLACK_KINGSIDE_CASTLE_PATH, color)
+        @position.all_sources_free_from_enemy_control?(Chess::BLACK_KINGSIDE_CASTLE_PATH[1..], color) &&
+          @position.all_sources_free_from_enemy_attack?(Chess::BLACK_KINGSIDE_CASTLE_PATH.first, color)
       end
     end
 
     def queenside_castle_path_free_from_enemy_control?(color)
       if color == :white
-        @position.all_sources_free_from_enemy_control?(Chess::WHITE_QUEENSIDE_CASTLE_PATH, color)
+        @position.all_sources_free_from_enemy_control?(Chess::WHITE_QUEENSIDE_CASTLE_PATH[1..], color) &&
+          @position.all_sources_free_from_enemy_attack?([Chess::WHITE_QUEENSIDE_CASTLE_PATH.first], color)
       elsif color == :black
-        @position.all_sources_free_from_enemy_control?(Chess::BLACK_QUEENSIDE_CASTLE_PATH, color)
+        @position.all_sources_free_from_enemy_control?(Chess::BLACK_QUEENSIDE_CASTLE_PATH[1..], color) &&
+          @position.all_sources_free_from_enemy_attack?([Chess::BLACK_QUEENSIDE_CASTLE_PATH.first], color)
       end
     end
 
