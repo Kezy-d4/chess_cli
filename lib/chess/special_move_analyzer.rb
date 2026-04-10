@@ -3,10 +3,19 @@
 module Chess
   # Analyzes special moves such as castling, en passant capture and promotion in
   # the context of a chess position
-  class SpecialMoveAnalyzer
+  class SpecialMoveAnalyzer # rubocop:disable Metrics/ClassLength
     # @param position [Position]
     def initialize(position)
       @position = position
+    end
+
+    def to_legal_en_passant_destinations_from(source)
+      return [] unless @position.board.occupant_at(source).is_a?(Pawn)
+
+      pawn = @position.board.occupant_at(source)
+      pawn.to_potential_en_passant_capture_coords(source).select do |capture_coord|
+        capture_coord == Coord.from_s(@position.aux_pos_data.access_en_passant_target)
+      end
     end
 
     def en_passant_attack?(source, destination)
