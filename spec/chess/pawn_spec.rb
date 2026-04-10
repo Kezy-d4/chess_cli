@@ -276,4 +276,50 @@ describe Chess::Pawn do
       end
     end
   end
+
+  describe '#to_potential_en_passant_capture_coords' do
+    context 'when white and with the correct rank to capture en passant' do
+      subject(:pawn_white) { described_class.new(:white) }
+
+      let(:coord_e5) { Chess::Coord.from_s('e5') }
+
+      it 'returns an array of potential en passant capture coords' do
+        expect(pawn_white.to_potential_en_passant_capture_coords(coord_e5))
+          .to match_array(%w[d6 f6].map { |coord_s| Chess::Coord.from_s(coord_s) })
+      end
+    end
+
+    context 'when black and with the correct rank to capture en passant' do
+      subject(:pawn_black) { described_class.new(:black) }
+
+      let(:coord_e4) { Chess::Coord.from_s('e4') }
+
+      it 'returns an array of potential en passant capture coords' do
+        expect(pawn_black.to_potential_en_passant_capture_coords(coord_e4))
+          .to match_array(%w[d3 f3].map { |coord_s| Chess::Coord.from_s(coord_s) })
+      end
+    end
+
+    context 'when white and with an incorrect rank to capture en passant' do
+      subject(:pawn_white) { described_class.new(:white) }
+
+      let(:coord_e4) { Chess::Coord.from_s('e4') }
+
+      it 'returns an empty array' do
+        expect(pawn_white.to_potential_en_passant_capture_coords(coord_e4))
+          .to be_an(Array).and be_empty
+      end
+    end
+
+    context 'when black and with an incorrect rank to capture en passant' do
+      subject(:pawn_black) { described_class.new(:black) }
+
+      let(:coord_e5) { Chess::Coord.from_s('e5') }
+
+      it 'returns an empty array' do
+        expect(pawn_black.to_potential_en_passant_capture_coords(coord_e5))
+          .to be_an(Array).and be_empty
+      end
+    end
+  end
 end

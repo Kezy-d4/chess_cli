@@ -32,6 +32,14 @@ module Chess
       end
     end
 
+    def to_potential_en_passant_capture_coords(coord)
+      if white?
+        to_white_potential_en_passant_capture_coords(coord)
+      elsif black?
+        to_black_potential_en_passant_capture_coords(coord)
+      end
+    end
+
     private
 
     def to_white_adjacent_movement_coords(coord)
@@ -62,6 +70,24 @@ module Chess
         south_west: [coord.to_south_western_adjacencies.first],
         south_east: [coord.to_south_eastern_adjacencies.first]
       }.delete_empty_arr_vals
+    end
+
+    def to_white_potential_en_passant_capture_coords(coord)
+      arr = []
+      return arr unless coord.rank == Chess::BLACK_EN_PASSANT_CAPTURE_RANK
+
+      north_west = coord.to_adjacency(-1, 1)
+      north_east = coord.to_adjacency(1, 1)
+      arr.push(north_west, north_east)
+    end
+
+    def to_black_potential_en_passant_capture_coords(coord)
+      arr = []
+      return arr unless coord.rank == Chess::WHITE_EN_PASSANT_CAPTURE_RANK
+
+      south_west = coord.to_adjacency(-1, -1)
+      south_east = coord.to_adjacency(1, -1)
+      arr.push(south_west, south_east)
     end
   end
 end
