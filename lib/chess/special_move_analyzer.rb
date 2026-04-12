@@ -39,9 +39,9 @@ module Chess
 
       pawn = @position.board.occupant_at(source)
       if pawn.white?
-        destination == Chess::WHITE_PAWN_LAST_RANK
+        destination.rank == Chess::WHITE_PAWN_LAST_RANK
       elsif pawn.black?
-        destination == Chess::BLACK_PAWN_LAST_RANK
+        destination.rank == Chess::BLACK_PAWN_LAST_RANK
       end
     end
 
