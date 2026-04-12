@@ -2,7 +2,7 @@
 
 module Chess
   # A chess position
-  class Position
+  class Position # rubocop:disable Metrics/ClassLength
     attr_reader :board, :aux_pos_data
 
     using HashExtensions
@@ -70,9 +70,21 @@ module Chess
       }.flatten.uniq
     end
 
+    def move_piece(source, destination)
+      raise ArgumentError unless @board.occupied_at?(source)
+
+      piece = @board.occupant_at(source)
+      special_move_analyzer = SpecialMoveAnalyzer.new(self)
+      if special_move_analyzer.en_passant_attack?(source, destination)
+        @board.empty_at(special_move_analyzer.to_en_passant_capture_coord)
+      end
+      @board.empty_at(source)
+      @board.fill_at(destination, piece)
+    end
+
     def move_would_leave_active_color_in_check?(source, destination)
       clone = self.clone
-      clone.board.move_piece(source, destination)
+      clone.move_piece(source, destination)
       clone.check?
     end
 

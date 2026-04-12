@@ -45,14 +45,6 @@ module Chess
       arr.join('/')
     end
 
-    def move_piece(source, destination)
-      raise ArgumentError unless occupied_at?(source)
-
-      piece = occupant_at(source)
-      empty_at(source)
-      fill_at(destination, piece)
-    end
-
     def assoc_at(coord)
       @squares.assoc(coord)
     end

@@ -41,34 +41,6 @@ describe Chess::Board do
     end
   end
 
-  describe '#move_piece' do
-    subject(:board_default) do
-      fen_parser_default = Chess::FENParser.new(Chess::DEFAULT_FEN)
-      described_class.from_fen_parser(fen_parser_default)
-    end
-
-    context 'when the source is vacant' do
-      let(:source) { Chess::Coord.from_s('e3') }
-      let(:destination) { Chess::Coord.from_s('e4') }
-
-      it 'raises an argument error' do
-        expect { board_default.move_piece(source, destination) }
-          .to raise_error(ArgumentError)
-      end
-    end
-
-    context 'when the source is occupied' do
-      let(:source) { Chess::Coord.from_s('e2') }
-      let(:destination) { Chess::Coord.from_s('e4') }
-
-      it 'moves the source piece to the destination' do
-        board_default.move_piece(source, destination)
-        expect(board_default.to_partial_fen)
-          .to eq('rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR')
-      end
-    end
-  end
-
   describe '#assoc_at' do
     subject(:board_default) do
       fen_parser_default = Chess::FENParser.new(Chess::DEFAULT_FEN)

@@ -203,6 +203,47 @@ describe Chess::Position do
     end
   end
 
+  describe '#move_piece' do
+    context 'when capturing en passant' do
+      subject(:position_mid) do
+        fen = 'rnb1kbnr/ppp3qp/3pp1p1/4Pp2/4K3/7N/PPPP1PPP/RNBQ1B1R w kq f6 0 8'
+        fen_parser = Chess::FENParser.new(fen)
+        described_class.from_fen_parser(fen_parser)
+      end
+
+      example 'source e5 to destination f6' do
+        position_mid.move_piece(Chess::Coord.from_s('e5'), Chess::Coord.from_s('f6'))
+        expect(position_mid.to_fen.split.first).to eq('rnb1kbnr/ppp3qp/3ppPp1/8/4K3/7N/PPPP1PPP/RNBQ1B1R')
+      end
+    end
+
+    context 'when capturing at the destination' do
+      subject(:position_mid) do
+        fen = 'rnbqkbnr/pppp1ppp/8/4p3/4PP2/8/PPPP2PP/RNBQKBNR b KQkq - 0 2'
+        fen_parser = Chess::FENParser.new(fen)
+        described_class.from_fen_parser(fen_parser)
+      end
+
+      example 'source e5 to destination f4' do
+        position_mid.move_piece(Chess::Coord.from_s('e5'), Chess::Coord.from_s('f4'))
+        expect(position_mid.to_fen.split.first).to eq('rnbqkbnr/pppp1ppp/8/8/4Pp2/8/PPPP2PP/RNBQKBNR')
+      end
+    end
+
+    context 'when moving without capture' do
+      subject(:position_mid) do
+        fen = 'rnbqkbnr/pppp1ppp/8/8/4Pp2/8/PPPP2PP/RNBQKBNR w KQkq - 0 3'
+        fen_parser = Chess::FENParser.new(fen)
+        described_class.from_fen_parser(fen_parser)
+      end
+
+      example 'source f1 to destination c4' do
+        position_mid.move_piece(Chess::Coord.from_s('f1'), Chess::Coord.from_s('c4'))
+        expect(position_mid.to_fen.split.first).to eq('rnbqkbnr/pppp1ppp/8/8/2B1Pp2/8/PPPP2PP/RNBQK1NR')
+      end
+    end
+  end
+
   describe '#move_would_leave_active_color_in_check?' do
     subject(:position_mid) do
       fen = 'rnb1kb1r/p1pp1ppp/5n2/1B6/4Pp1q/5N2/PPPP2PP/RNBQ1K1R b kq - 2 6'
