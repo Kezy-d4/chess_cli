@@ -73,11 +73,8 @@ module Chess
     def move_piece(source, destination)
       raise ArgumentError unless @board.occupied_at?(source)
 
+      update_before_move(source, destination, SpecialMoveAnalyzer.new(self))
       piece = @board.occupant_at(source)
-      special_move_analyzer = SpecialMoveAnalyzer.new(self)
-      if special_move_analyzer.en_passant_attack?(source, destination)
-        @board.empty_at(special_move_analyzer.to_en_passant_capture_coord)
-      end
       @board.empty_at(source)
       @board.fill_at(destination, piece)
     end
@@ -142,6 +139,16 @@ module Chess
 
     def clone
       Marshal.load(Marshal.dump(self))
+    end
+
+    private
+
+    def update_before_move(source, destination, special_move_analyzer)
+      if special_move_analyzer.en_passant_attack?(source, destination)
+        @board.empty_at(special_move_analyzer.to_en_passant_capture_coord)
+      elsif special_move_analyzer.move_to_promote?(source, destination)
+        @board.promote_at(source)
+      end
     end
   end
 end
