@@ -65,6 +65,15 @@ module Chess
       square_at(coord).empty
     end
 
+    def promote_at(coord)
+      raise ArgumentError unless occupied_at?(coord)
+
+      color = occupant_at(coord).color
+      promotion_choice = prompt_for_promotion
+      promoted = Chess::PROMOTION_MAP[promotion_choice].new(color)
+      fill_at(coord, promoted)
+    end
+
     def occupied_at?(coord)
       square_at(coord).occupied?
     end
@@ -108,6 +117,16 @@ module Chess
       end
       fen_a << contiguous_empty_counter if contiguous_empty_counter.positive?
       fen_a.join
+    end
+
+    def prompt_for_promotion
+      loop do
+        puts 'Choose a promotion: ["Queen", "Knight", "Bishop", "Rook"]'
+        inp = gets.chomp.downcase
+        return inp if Chess::PROMOTION_MAP.key?(inp)
+
+        puts "Invalid input: #{inp}"
+      end
     end
   end
 end

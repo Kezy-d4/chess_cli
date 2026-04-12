@@ -148,6 +148,115 @@ describe Chess::Board do
     end
   end
 
+  describe '#promote_at' do
+    subject(:board) do
+      fen = Chess::DEFAULT_FEN
+      fen_parser = Chess::FENParser.new(fen)
+      described_class.from_fen_parser(fen_parser)
+    end
+
+    let(:prompt_msg) { "Choose a promotion: [\"Queen\", \"Knight\", \"Bishop\", \"Rook\"]\n" }
+
+    before { allow($stdout).to receive(:puts) }
+
+    context 'when the given source is vacant' do
+      it 'raises an argument error' do
+        expect { board.promote_at(Chess::Coord.from_s('e4')) }
+          .to raise_error(ArgumentError)
+      end
+    end
+
+    context 'when promoting to a queen' do
+      let(:input) { StringIO.new('queen') }
+      let(:source) { Chess::Coord.from_s('e2') }
+
+      it 'prompts for a promotion' do
+        $stdin = input
+        expect { board.promote_at(source) }.to output(prompt_msg).to_stdout
+        $stdin = STDIN
+      end
+
+      it 'promotes to a queen of the appropriate color' do
+        $stdin = input
+        expect { board.promote_at(source) }.to change(board, :to_partial_fen)
+          .to('rnbqkbnr/pppppppp/8/8/8/8/PPPPQPPP/RNBQKBNR')
+        $stdin = STDIN
+      end
+    end
+
+    context 'when promoting to a knight' do
+      let(:input) { StringIO.new('knight') }
+      let(:source) { Chess::Coord.from_s('e7') }
+
+      it 'prompts for a promotion' do
+        $stdin = input
+        expect { board.promote_at(source) }.to output(prompt_msg).to_stdout
+        $stdin = STDIN
+      end
+
+      it 'promotes to a knight of the appropriate color' do
+        $stdin = input
+        expect { board.promote_at(source) }.to change(board, :to_partial_fen)
+          .to('rnbqkbnr/ppppnppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
+        $stdin = STDIN
+      end
+    end
+
+    context 'when promoting to a bishop' do
+      let(:input) { StringIO.new('bishop') }
+      let(:source) { Chess::Coord.from_s('e2') }
+
+      it 'prompts for a promotion' do
+        $stdin = input
+        expect { board.promote_at(source) }.to output(prompt_msg).to_stdout
+        $stdin = STDIN
+      end
+
+      it 'promotes to a bishop of the appropriate color' do
+        $stdin = input
+        expect { board.promote_at(source) }.to change(board, :to_partial_fen)
+          .to('rnbqkbnr/pppppppp/8/8/8/8/PPPPBPPP/RNBQKBNR')
+        $stdin = STDIN
+      end
+    end
+
+    context 'when promoting to a rook' do
+      let(:input) { StringIO.new('rook') }
+      let(:source) { Chess::Coord.from_s('e7') }
+
+      it 'prompts for a promotion' do
+        $stdin = input
+        expect { board.promote_at(source) }.to output(prompt_msg).to_stdout
+        $stdin = STDIN
+      end
+
+      it 'promotes to a rook of the appropriate color' do
+        $stdin = input
+        expect { board.promote_at(source) }.to change(board, :to_partial_fen)
+          .to('rnbqkbnr/pppprppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
+        $stdin = STDIN
+      end
+    end
+
+    context 'when promoting to a queen with mixed case input' do
+      let(:input) { StringIO.new('QuEeN') }
+      let(:source) { Chess::Coord.from_s('e2') }
+
+      it 'prompts for a promotion' do
+        $stdin = input
+        expect { board.promote_at(source) }.to output(prompt_msg).to_stdout
+        $stdin = STDIN
+      end
+
+      it 'promotes to a queen of the appropriate color' do
+        $stdin = input
+        expect { board.promote_at(source) }.to change(board, :to_partial_fen)
+          .to('rnbqkbnr/pppppppp/8/8/8/8/PPPPQPPP/RNBQKBNR')
+        $stdin = STDIN
+      end
+    end
+  end
+
   describe '#occupied_at?' do
     subject(:board_default) do
       fen_parser_default = Chess::FENParser.new(Chess::DEFAULT_FEN)
