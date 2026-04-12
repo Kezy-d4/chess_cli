@@ -18,5 +18,12 @@ module Chess
     BLACK_EN_PASSANT_VULNERABLE_RANK = 6
 
     BLACK_EN_PASSANT_CAPTURE_RANK = 5
+
+    PROMOTION_MAP = {
+      'queen' => Queen,
+      'knight' => Knight,
+      'bishop' => Bishop,
+      'rook' => Rook
+    }.freeze
   end
 end
