@@ -9,7 +9,7 @@ module Chess
       @position = position
     end
 
-    def to_legal_en_passant_destinations_from(source)
+    def to_en_passant_destinations_from(source)
       return [] unless @position.board.occupant_at(source).is_a?(Pawn)
 
       pawn = @position.board.occupant_at(source)
