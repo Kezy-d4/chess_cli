@@ -65,6 +65,14 @@ module Chess
       square_at(coord).empty
     end
 
+    def replace_at(coord, type)
+      raise ArgumentError unless occupied_at?(coord)
+
+      current_piece = occupant_at(coord)
+      new_piece = type.new(current_piece.color)
+      fill_at(coord, new_piece)
+    end
+
     def occupied_at?(coord)
       square_at(coord).occupied?
     end

@@ -148,6 +148,44 @@ describe Chess::Board do
     end
   end
 
+  describe '#replace_at' do
+    subject(:board_default) do
+      fen_parser_default = Chess::FENParser.new(Chess::DEFAULT_FEN)
+      described_class.from_fen_parser(fen_parser_default)
+    end
+
+    context 'when vacant at the given source' do
+      let(:source) { Chess::Coord.from_s('e4') }
+      let(:type) { Chess::Queen }
+
+      it 'raises an argument error' do
+        expect { board_default.replace_at(source, type) }.to raise_error(ArgumentError)
+      end
+    end
+
+    context 'when occupied at the given source by white' do
+      let(:source) { Chess::Coord.from_s('e2') }
+      let(:type) { Chess::Queen }
+
+      it 'replaces the given source with the given type' do
+        expect { board_default.replace_at(source, type) }
+          .to change(board_default, :to_partial_fen)
+          .to('rnbqkbnr/pppppppp/8/8/8/8/PPPPQPPP/RNBQKBNR')
+      end
+    end
+
+    context 'when occupied at the given source by black' do
+      let(:source) { Chess::Coord.from_s('e7') }
+      let(:type) { Chess::Knight }
+
+      it 'replaces the given source with the given type' do
+        expect { board_default.replace_at(source, type) }
+          .to change(board_default, :to_partial_fen)
+          .to('rnbqkbnr/ppppnppp/8/8/8/8/PPPPPPPP/RNBQKBNR')
+      end
+    end
+  end
+
   describe '#occupied_at?' do
     subject(:board_default) do
       fen_parser_default = Chess::FENParser.new(Chess::DEFAULT_FEN)
