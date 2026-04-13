@@ -56,6 +56,10 @@ module Chess
       end
     end
 
+    def move_to_castle?(source, destination)
+      to_legal_castle_destinations_from(source).include?(destination)
+    end
+
     def kingside_castle_legal?(color)
       kingside_castle_rights_available?(color) &&
         kingside_castle_space_clear?(color) &&
