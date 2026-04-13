@@ -31,10 +31,12 @@ module Chess
   require_relative 'chess/fen_constants'
   require_relative 'chess/board_constants'
   require_relative 'chess/coord_constants'
+  require_relative 'chess/display_constants'
 
   include PawnConstants
   include KingAndCastlingConstants
   include FENConstants
   include BoardConstants
   include CoordConstants
+  include DisplayConstants
 end

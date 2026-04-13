@@ -2,33 +2,8 @@
 
 module Chess
   # Displays a chess board on the command line
-  class Display # rubocop:disable Metrics/ClassLength
+  class Display
     using ObjectExtensions
-
-    COLOR_RGB_MAP = {
-      white: '255;255;255',
-      black: '0;0;0',
-      green: '119;162;109',
-      yellow: '200;194;100',
-      lighter_orange: '170;82;48',
-      darker_orange: '130;68;43',
-      lighter_olive: '150;144;49',
-      darker_olive: '130;125;53',
-      red: '168;50;50'
-    }.freeze
-
-    PIECE_ICON_MAP = {
-      king: "\u{265A}",
-      queen: "\u{265B}",
-      rook: "\u{265C}",
-      bishop: "\u{265D}",
-      knight: "\u{265E}",
-      pawn: "\u{2659}"
-    }.freeze
-
-    CONTROLLED_INDICATOR = "\u{25CF}"
-
-    BOARD_FILE_MARKERS = '   a  b  c  d  e  f  g  h'
 
     def initialize
       @current_bg_color = :yellow
