@@ -15,13 +15,13 @@ module Chess
 
     BLACK_QUEENSIDE_ROOK_HOME = Coord.from_s('a8')
 
-    WHITE_KINGSIDE_ROOK_CASTLE_DESTINATION = [Coord.from_s('f1')].freeze
+    WHITE_KINGSIDE_ROOK_CASTLE_DESTINATION = Coord.from_s('f1').freeze
 
-    WHITE_QUEENSIDE_ROOK_CASTLE_DESTINATION = [Coord.from_s('d1')].freeze
+    WHITE_QUEENSIDE_ROOK_CASTLE_DESTINATION = Coord.from_s('d1').freeze
 
-    BLACK_KINGSIDE_ROOK_CASTLE_DESTINATION = [Coord.from_s('f8')].freeze
+    BLACK_KINGSIDE_ROOK_CASTLE_DESTINATION = Coord.from_s('f8').freeze
 
-    BLACK_QUEENSIDE_ROOK_CASTLE_DESTINATION = [Coord.from_s('d8')].freeze
+    BLACK_QUEENSIDE_ROOK_CASTLE_DESTINATION = Coord.from_s('d8').freeze
 
     WHITE_KINGSIDE_CASTLE_PATH = [Coord.from_s('e1'), Coord.from_s('f1'), Coord.from_s('g1')].freeze
 
