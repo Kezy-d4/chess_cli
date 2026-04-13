@@ -217,25 +217,6 @@ describe Chess::Position do
       end
     end
 
-    context 'when moving to promote' do
-      subject(:position_mid) do
-        fen = 'rnbqkbnr/ppp1pppp/4P3/8/8/8/PPpP1PPP/RNBQKBNR b KQkq - 1 5'
-        fen_parser = Chess::FENParser.new(fen)
-        described_class.from_fen_parser(fen_parser)
-      end
-
-      let(:input) { StringIO.new('queen') }
-
-      before { allow($stdout).to receive(:puts) }
-
-      example 'source c2 to destination d1' do
-        $stdin = input
-        position_mid.move_piece(Chess::Coord.from_s('c2'), Chess::Coord.from_s('d1'))
-        expect(position_mid.to_fen.split.first).to eq('rnbqkbnr/ppp1pppp/4P3/8/8/8/PP1P1PPP/RNBqKBNR')
-        $stdin = STDIN
-      end
-    end
-
     context 'when capturing at the destination' do
       subject(:position_mid) do
         fen = 'rnbqkbnr/pppp1ppp/8/4p3/4PP2/8/PPPP2PP/RNBQKBNR b KQkq - 0 2'
