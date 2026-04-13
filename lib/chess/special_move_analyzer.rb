@@ -63,13 +63,13 @@ module Chess
     def kingside_castle_legal?(color)
       kingside_castle_rights_available?(color) &&
         kingside_castle_space_clear?(color) &&
-        kingside_castle_path_free_from_enemy_control?(color)
+        kingside_castle_path_free?(color)
     end
 
     def queenside_castle_legal?(color)
       queenside_castle_rights_available?(color) &&
         queenside_castle_space_clear?(color) &&
-        queenside_castle_path_free_from_enemy_control?(color)
+        queenside_castle_path_free?(color)
     end
 
     private
@@ -88,7 +88,7 @@ module Chess
       arr
     end
 
-    def kingside_castle_path_free_from_enemy_control?(color)
+    def kingside_castle_path_free?(color)
       if color == :white
         @position.all_sources_free_from_enemy_control?(Chess::WHITE_KINGSIDE_CASTLE_PATH[1..], color) &&
           @position.all_sources_free_from_enemy_attack?([Chess::WHITE_KINGSIDE_CASTLE_PATH.first], color)
@@ -98,7 +98,7 @@ module Chess
       end
     end
 
-    def queenside_castle_path_free_from_enemy_control?(color)
+    def queenside_castle_path_free?(color)
       if color == :white
         @position.all_sources_free_from_enemy_control?(Chess::WHITE_QUEENSIDE_CASTLE_PATH[1..], color) &&
           @position.all_sources_free_from_enemy_attack?([Chess::WHITE_QUEENSIDE_CASTLE_PATH.first], color)
