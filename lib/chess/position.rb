@@ -73,7 +73,7 @@ module Chess
     def move_piece(source, destination)
       raise ArgumentError unless @board.occupied_at?(source)
 
-      capture_any_en_passant_target(source, destination, SpecialMoveAnalyzer.new(self))
+      capture_any_en_passant_target(source, destination, PreMoveAnalyzer.new(self))
       piece = @board.occupant_at(source)
       @board.empty_at(source)
       @board.fill_at(destination, piece)
@@ -143,10 +143,10 @@ module Chess
 
     private
 
-    def capture_any_en_passant_target(source, destination, special_move_analyzer)
-      return unless special_move_analyzer.en_passant_attack?(source, destination)
+    def capture_any_en_passant_target(source, destination, pre_move_analyzer)
+      return unless pre_move_analyzer.en_passant_attack?(source, destination)
 
-      @board.empty_at(special_move_analyzer.to_en_passant_capture_coord)
+      @board.empty_at(pre_move_analyzer.to_en_passant_capture_coord)
     end
   end
 end

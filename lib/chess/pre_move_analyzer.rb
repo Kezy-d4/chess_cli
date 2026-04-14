@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 module Chess
-  # Analyzes special moves such as castling, en passant capture and promotion in
-  # the context of a chess position
-  class SpecialMoveAnalyzer # rubocop:disable Metrics/ClassLength
+  # Analyzes information before a move in the context of a chess position
+  class PreMoveAnalyzer # rubocop:disable Metrics/ClassLength
     # @param position [Position]
     def initialize(position)
       @position = position

@@ -22,7 +22,7 @@ module Chess
   require_relative 'chess/aux_pos_data'
   require_relative 'chess/position'
   require_relative 'chess/log'
-  require_relative 'chess/special_move_analyzer'
+  require_relative 'chess/pre_move_analyzer'
   require_relative 'chess/move_validator'
   require_relative 'chess/turn_processor'
   require_relative 'chess/display'
