@@ -16,6 +16,10 @@ module Chess
       @position.to_all_sources(@position.to_active_color).include?(source)
     end
 
+    def any_legal_moves_available?
+      to_all_legal_destinations.any?
+    end
+
     # Returns a complete array of attacked destinations from a given legal source.
     # The method rejects destinations that would leave the active color in check
     # and includes any potential en passant attacks.
@@ -46,6 +50,12 @@ module Chess
 
     def to_all_legal_destinations_from(source)
       to_legal_attacked_destinations_from(source) + to_legal_controlled_destinations_from(source)
+    end
+
+    def to_all_legal_destinations
+      @position.to_all_sources(@position.to_active_color).map { |source|
+        to_all_legal_destinations_from(source)
+      }.flatten.uniq
     end
   end
 end

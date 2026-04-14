@@ -68,6 +68,34 @@ describe Chess::MoveValidator do
     end
   end
 
+  describe '#any_legal_moves_available?' do
+    context 'with at least one legal move' do
+      subject(:move_validator) do
+        fen = 'r1bk2nr/p2p1pNp/n2B1Q2/1p1NP2P/6P1/3P4/P1P1K3/q5b1 b - - 2 22'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      it 'returns true' do
+        expect(move_validator.any_legal_moves_available?).to be(true)
+      end
+    end
+
+    context 'with no legal moves' do
+      subject(:move_validator) do
+        fen = 'r1bk3r/p2pBpNp/n4n2/1p1NP2P/6P1/3P4/P1P1K3/q5b1 b - - 1 23'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      it 'returns false' do
+        expect(move_validator.any_legal_moves_available?).to be(false)
+      end
+    end
+  end
+
   describe '#to_legal_attacked_destinations_from' do
     context 'when an en passant capture would remove check' do
       subject(:move_validator) do
