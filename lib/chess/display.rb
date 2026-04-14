@@ -3,18 +3,16 @@
 module Chess
   # Displays a chess board on the command line
   class Display
-    using ObjectExtensions
-
     def initialize
       @current_bg_color = :yellow
     end
 
     def render_board(board_ranks, metadata)
-      ChessConstants::BOARD_RANK_MARKERS.each do |rank_i|
+      Chess::BOARD_RANK_MARKERS.each do |rank_i|
         render_rank(board_ranks[rank_i], rank_i, metadata)
         puts
       end
-      puts BOARD_FILE_MARKERS
+      puts Chess::BOARD_FILE_INDICATORS
     end
 
     private
@@ -24,8 +22,8 @@ module Chess
       rank_i.even? ? update_current_bg_color(:yellow) : update_current_bg_color(:green)
       file_idx = 0
       rank.each do |square|
-        coord_s = "#{ChessConstants::BOARD_FILE_MARKERS[file_idx]}#{rank_i}"
-        coord = Chess::Coord.from_s(coord_s)
+        coord_s = "#{Chess::BOARD_FILE_MARKERS[file_idx]}#{rank_i}"
+        coord = Coord.from_s(coord_s)
         render_square(square, coord, @current_bg_color, metadata)
         swap_current_bg_color
         file_idx += 1
@@ -48,30 +46,30 @@ module Chess
         render_previous_destination_square(square.occupant)
       elsif square.occupied?
         render_occupied_square(square.occupant, bg_color)
-      elsif square.unoccupied?
-        render_unoccupied_square(bg_color)
+      elsif square.vacant?
+        render_vacant_square(bg_color)
       end
     end
     # rubocop:enable all
 
     def render_occupied_square(occupant, bg_color)
-      fg_rgb_val = COLOR_RGB_MAP[occupant.color]
-      bg_rgb_val = COLOR_RGB_MAP[bg_color]
-      occupant_icon = PIECE_ICON_MAP[occupant.to_class_s.downcase.to_sym]
+      fg_rgb_val = Chess::COLOR_RGB_MAP[occupant.color]
+      bg_rgb_val = Chess::COLOR_RGB_MAP[bg_color]
+      occupant_icon = Chess::PIECE_ICON_MAP[occupant.class]
       square = " #{occupant_icon} "
       print "\e[48;2;#{bg_rgb_val}m\e[38;2;#{fg_rgb_val}m#{square}\e[0m"
     end
 
-    def render_unoccupied_square(bg_color)
-      bg_rgb_val = COLOR_RGB_MAP[bg_color]
+    def render_vacant_square(bg_color)
+      bg_rgb_val = Chess::COLOR_RGB_MAP[bg_color]
       square = '   '
       print "\e[48;2;#{bg_rgb_val}m#{square}\e[0m"
     end
 
     def render_controlled_square(bg_color)
-      fg_rgb_val = COLOR_RGB_MAP[:lighter_orange]
-      bg_rgb_val = COLOR_RGB_MAP[bg_color]
-      square = " #{CONTROLLED_INDICATOR} "
+      fg_rgb_val = Chess::COLOR_RGB_MAP[:lighter_orange]
+      bg_rgb_val = Chess::COLOR_RGB_MAP[bg_color]
+      square = " #{Chess::CONTROLLED_INDICATOR} "
       print "\e[48;2;#{bg_rgb_val}m\e[38;2;#{fg_rgb_val}m#{square}\e[0m"
     end
 
@@ -88,7 +86,7 @@ module Chess
     end
 
     def render_previous_source_square
-      render_unoccupied_square(:lighter_olive)
+      render_vacant_square(:lighter_olive)
     end
 
     def render_previous_destination_square(occupant)
