@@ -33,31 +33,22 @@ module Chess
       end
     end
 
-    def move_to_promote?(source, destination)
-      return false unless @position.board.pawn_at?(source)
-
-      pawn = @position.board.occupant_at(source)
-      if pawn.white?
-        destination.rank == Chess::WHITE_PAWN_LAST_RANK
-      elsif pawn.black?
-        destination.rank == Chess::BLACK_PAWN_LAST_RANK
-      end
-    end
-
-    def to_legal_castle_destinations_from(source)
+    def to_castle_destinations_from(source)
       return [] unless @position.board.occupant_at(source).is_a?(King)
 
       king = @position.board.occupant_at(source)
       if king.white?
-        to_legal_white_castle_destinations
+        to_white_castle_destinations
       elsif king.black?
-        to_legal_black_castle_destinations
+        to_black_castle_destinations
       end
     end
 
     def move_to_castle?(source, destination)
-      to_legal_castle_destinations_from(source).include?(destination)
+      to_castle_destinations_from(source).include?(destination)
     end
+
+    private
 
     def kingside_castle_legal?(color)
       kingside_castle_rights_available?(color) &&
@@ -71,16 +62,14 @@ module Chess
         queenside_castle_path_free?(color)
     end
 
-    private
-
-    def to_legal_white_castle_destinations
+    def to_white_castle_destinations
       arr = []
       arr << Chess::WHITE_KINGSIDE_CASTLE_PATH.last if kingside_castle_legal?(:white)
       arr << Chess::WHITE_QUEENSIDE_CASTLE_PATH.last if queenside_castle_legal?(:white)
       arr
     end
 
-    def to_legal_black_castle_destinations
+    def to_black_castle_destinations
       arr = []
       arr << Chess::BLACK_KINGSIDE_CASTLE_PATH.last if kingside_castle_legal?(:black)
       arr << Chess::BLACK_QUEENSIDE_CASTLE_PATH.last if queenside_castle_legal?(:black)
@@ -93,7 +82,7 @@ module Chess
           @position.all_sources_free_from_enemy_attack?([Chess::WHITE_KINGSIDE_CASTLE_PATH.first], color)
       elsif color == :black
         @position.all_sources_free_from_enemy_control?(Chess::BLACK_KINGSIDE_CASTLE_PATH[1..], color) &&
-          @position.all_sources_free_from_enemy_attack?(Chess::BLACK_KINGSIDE_CASTLE_PATH.first, color)
+          @position.all_sources_free_from_enemy_attack?([Chess::BLACK_KINGSIDE_CASTLE_PATH.first], color)
       end
     end
 
