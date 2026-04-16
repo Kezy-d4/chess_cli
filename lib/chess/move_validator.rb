@@ -6,6 +6,7 @@ module Chess
     # @param position [Position]
     def initialize(position)
       @position = position
+      @pre_move_analyzer = PreMoveAnalyzer.new(@position)
     end
 
     def legal_move?(source, destination)
@@ -37,7 +38,7 @@ module Chess
       arr = []
       return arr unless legal_source?(source)
 
-      arr << PreMoveAnalyzer.new(@position).to_en_passant_destinations_from(source)
+      arr << @pre_move_analyzer.to_en_passant_destinations_from(source)
       arr << @position.to_attacked_destinations_from(source)
       arr.flatten.reject do |destination|
         @position.move_would_leave_active_color_in_check?(source, destination)
@@ -53,7 +54,7 @@ module Chess
       arr = @position.to_controlled_destinations_from(source).reject do |destination|
         @position.move_would_leave_active_color_in_check?(source, destination)
       end
-      (arr << PreMoveAnalyzer.new(@position).to_legal_castle_destinations_from(source)).flatten
+      (arr << @pre_move_analyzer.to_castle_destinations_from(source)).flatten
     end
 
     private
