@@ -302,4 +302,74 @@ describe Chess::PreMoveAnalyzer do
       end
     end
   end
+
+  describe '#move_to_capture?' do
+    context 'when white would capture en passant' do
+      subject(:pre_move_analyzer) do
+        fen = 'rnbqkbnr/ppp1p1pp/5p2/3pP3/8/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 3'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      let(:source_e5) { Chess::Coord.from_s('e5') }
+      let(:destination_d6) { Chess::Coord.from_s('d6') }
+
+      example 'source e5 to destination d6 returns true' do
+        expect(pre_move_analyzer.move_to_capture?(source_e5, destination_d6))
+          .to be(true)
+      end
+    end
+
+    context 'when black would capture en passant' do
+      subject(:pre_move_analyzer) do
+        fen = 'rnbqkbnr/pppp1ppp/8/8/4pP2/3P3N/PPP1P1PP/RNBQKB1R b KQkq f3 0 3'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      let(:source_e4) { Chess::Coord.from_s('e4') }
+      let(:destination_f3) { Chess::Coord.from_s('f3') }
+
+      example 'source e4 to destination f3 returns true' do
+        expect(pre_move_analyzer.move_to_capture?(source_e4, destination_f3))
+          .to be(true)
+      end
+    end
+
+    context 'when moving to a destination occupied by the enemy' do
+      subject(:pre_move_analyzer) do
+        fen = 'rnbqkbnr/ppp1pppp/8/3p4/2B1P3/8/PPPP1PPP/RNBQK1NR w KQkq - 0 3'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      let(:source_c4) { Chess::Coord.from_s('c4') }
+      let(:destination_d5) { Chess::Coord.from_s('d5') }
+
+      example 'source c4 to destination d5 returns true' do
+        expect(pre_move_analyzer.move_to_capture?(source_c4, destination_d5))
+          .to be(true)
+      end
+    end
+
+    context 'when moving to a vacant destination and not capturing en passant' do
+      subject(:pre_move_analyzer) do
+        fen = 'rnbqkbnr/ppp1pppp/8/3p4/2B1P3/8/PPPP1PPP/RNBQK1NR w KQkq - 0 3'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      let(:source_c4) { Chess::Coord.from_s('c4') }
+      let(:destination_a6) { Chess::Coord.from_s('a6') }
+
+      example 'source c4 to destination a6 returns false' do
+        expect(pre_move_analyzer.move_to_capture?(source_c4, destination_a6))
+          .to be(false)
+      end
+    end
+  end
 end

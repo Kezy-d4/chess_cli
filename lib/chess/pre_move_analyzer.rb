@@ -48,6 +48,16 @@ module Chess
       to_castle_destinations_from(source).include?(destination)
     end
 
+    def move_to_capture?(source, destination)
+      return false unless @position.board.occupied_at?(source)
+
+      source_piece = @position.board.occupant_at(source)
+      return true if en_passant_attack?(source, destination)
+      return true if @position.board.occupant_at(destination)&.enemy_to?(source_piece)
+
+      false
+    end
+
     private
 
     def kingside_castle_legal?(color)
