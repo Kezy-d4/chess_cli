@@ -1,0 +1,305 @@
+# frozen_string_literal: true
+
+describe Chess::PreMoveAnalyzer do
+  describe '#to_en_passant_destinations_from' do
+    context 'when white can capture en passant' do
+      subject(:pre_move_analyzer) do
+        fen = 'rnbqkbnr/ppp1p1pp/3p4/4Pp2/8/8/PPPP1PPP/RNBQKBNR w KQkq f6 0 3'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      example 'source e5 returns an array of en passant destinations' do
+        expect(pre_move_analyzer.to_en_passant_destinations_from(Chess::Coord.from_s('e5')))
+          .to match_array(%w[f6].map { |coord_s| Chess::Coord.from_s(coord_s) })
+      end
+    end
+
+    context 'when black can capture en passant' do
+      subject(:pre_move_analyzer) do
+        fen = 'rnbqkbnr/ppp1pppp/8/8/2Pp4/4PN2/PP1P1PPP/RNBQKB1R b KQkq c3 0 3'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      example 'source d4 returns an array of en passant destinations' do
+        expect(pre_move_analyzer.to_en_passant_destinations_from(Chess::Coord.from_s('d4')))
+          .to match_array(%w[c3].map { |coord_s| Chess::Coord.from_s(coord_s) })
+      end
+    end
+
+    context 'when a pawn is in position without an en passant target' do
+      subject(:pre_move_analyzer) do
+        fen = 'r1bqkbnr/ppp1pppp/2n5/8/2Pp4/4P3/PP1P1PPP/RNBQKBNR b KQkq - 2 4'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      example 'source d4 returns an empty array' do
+        expect(pre_move_analyzer.to_en_passant_destinations_from(Chess::Coord.from_s('d4')))
+          .to be_an(Array).and be_empty
+      end
+    end
+
+    context 'when a pawn is out of position for en passant capture' do
+      subject(:pre_move_analyzer) do
+        fen = 'r1bqkbnr/ppp1pppp/2n5/8/2Pp4/4P3/PP1P1PPP/RNBQKBNR b KQkq - 2 4'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      example 'source e3 returns an empty array' do
+        expect(pre_move_analyzer.to_en_passant_destinations_from(Chess::Coord.from_s('e3')))
+          .to be_an(Array).and be_empty
+      end
+    end
+
+    context 'when the piece at the source is not a pawn' do
+      subject(:pre_move_analyzer) do
+        fen = 'r1bqkbnr/ppp1pppp/2n5/8/2Pp4/4P3/PP1P1PPP/RNBQKBNR b KQkq - 2 4'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      example 'source c6 returns an empty array' do
+        expect(pre_move_analyzer.to_en_passant_destinations_from(Chess::Coord.from_s('c6')))
+          .to be_an(Array).and be_empty
+      end
+    end
+  end
+
+  describe '#en_passant_attack?' do
+    context 'when a white pawn would move to the en passant target' do
+      subject(:pre_move_analyzer) do
+        fen = 'rnbqkbnr/ppp1p1pp/3p4/4Pp2/8/8/PPPP1PPP/RNBQKBNR w KQkq f6 0 3'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      let(:source_e5) { Chess::Coord.from_s('e5') }
+      let(:destination_f6) { Chess::Coord.from_s('f6') }
+
+      example 'source e5 to destination f6 returns true' do
+        expect(pre_move_analyzer.en_passant_attack?(source_e5, destination_f6))
+          .to be(true)
+      end
+    end
+
+    context 'when a black pawn would move to the en passant target' do
+      subject(:pre_move_analyzer) do
+        fen = 'rnbqkbnr/ppp1pppp/8/8/2Pp4/4P3/PP1PNPPP/RNBQKB1R b KQkq c3 0 3'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      let(:source_d4) { Chess::Coord.from_s('d4') }
+      let(:destination_c3) { Chess::Coord.from_s('c3') }
+
+      example 'source d4 to destination c3 returns true' do
+        expect(pre_move_analyzer.en_passant_attack?(source_d4, destination_c3))
+          .to be(true)
+      end
+    end
+
+    context 'when a pawn would not move to the en passant target' do
+      subject(:pre_move_analyzer) do
+        fen = 'rnbqkbnr/ppp1pppp/8/8/2Pp4/4P3/PP1PNPPP/RNBQKB1R b KQkq c3 0 3'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      let(:source_d4) { Chess::Coord.from_s('d4') }
+      let(:destination_d3) { Chess::Coord.from_s('d3') }
+
+      example 'source d4 to destination d3 returns false' do
+        expect(pre_move_analyzer.en_passant_attack?(source_d4, destination_d3))
+          .to be(false)
+      end
+    end
+
+    context 'when a non-pawn would move to the en passant target' do
+      subject(:pre_move_analyzer) do
+        fen = 'rnbqkbnr/ppp1p1pp/3p4/4Pp2/6N1/N7/PPPP1PPP/R1BQKB1R w KQkq f6 0 9'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      let(:source_g4) { Chess::Coord.from_s('g4') }
+      let(:destination_f6) { Chess::Coord.from_s('f6') }
+
+      example 'source g4 to destination f6 returns false' do
+        expect(pre_move_analyzer.en_passant_attack?(source_g4, destination_f6))
+          .to be(false)
+      end
+    end
+
+    context 'when there is no en passant target' do
+      subject(:pre_move_analyzer) do
+        fen = Chess::DEFAULT_FEN
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      let(:source_e2) { Chess::Coord.from_s('e2') }
+      let(:destination_e4) { Chess::Coord.from_s('e4') }
+
+      example 'source e2 to destination e4 returns false' do
+        expect(pre_move_analyzer.en_passant_attack?(source_e2, destination_e4))
+          .to be(false)
+      end
+    end
+  end
+
+  describe '#to_en_passant_capture_coord' do
+    context 'when a white pawn is en passant vulnerable' do
+      subject(:pre_move_analyzer) do
+        fen = 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      it 'returns the appropriate capture coord' do
+        expect(pre_move_analyzer.to_en_passant_capture_coord)
+          .to eq(Chess::Coord.from_s('e4'))
+      end
+    end
+
+    context 'when a black pawn is en passant vulnerable' do
+      subject(:pre_move_analyzer) do
+        fen = 'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      it 'returns the appropriate capture coord' do
+        expect(pre_move_analyzer.to_en_passant_capture_coord)
+          .to eq(Chess::Coord.from_s('e5'))
+      end
+    end
+
+    context 'without an en passant target' do
+      subject(:pre_move_analyzer) do
+        fen = Chess::DEFAULT_FEN
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      it 'returns a dash string' do
+        expect(pre_move_analyzer.to_en_passant_capture_coord).to eq('-')
+      end
+    end
+  end
+
+  describe '#to_castle_destinations_from' do
+    context 'when all castles are possible' do
+      subject(:pre_move_analyzer) do
+        fen = 'r3k2r/p1pp1ppp/bpn4n/2b1p1q1/2B1P1Q1/BPN4N/P1PP1PPP/R3K2R w KQkq - 4 8'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      example 'source e1 returns an array of castle destinations' do
+        expect(pre_move_analyzer.to_castle_destinations_from(Chess::Coord.from_s('e1')))
+          .to match_array(%w[c1 g1].map { |coord_s| Chess::Coord.from_s(coord_s) })
+      end
+
+      example 'source e8 returns an array of castle destinations' do
+        expect(pre_move_analyzer.to_castle_destinations_from(Chess::Coord.from_s('e8')))
+          .to match_array(%w[c8 g8].map { |coord_s| Chess::Coord.from_s(coord_s) })
+      end
+
+      example 'source h1 returns an empty array' do
+        expect(pre_move_analyzer.to_castle_destinations_from(Chess::Coord.from_s('h1')))
+          .to be_an(Array).and be_empty
+      end
+    end
+
+    context 'when no castles are possible' do
+      subject(:pre_move_analyzer) do
+        fen = 'r3k1nr/p1p2ppp/b1np4/1pb1p1q1/1PB1P3/B1N4Q/P1PP1PPP/R3K1NR w Kkq - 2 10'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      example 'source e1 returns an empty array' do
+        expect(pre_move_analyzer.to_castle_destinations_from(Chess::Coord.from_s('e1')))
+          .to be_an(Array).and be_empty
+      end
+
+      example 'source e8 returns an empty array' do
+        expect(pre_move_analyzer.to_castle_destinations_from(Chess::Coord.from_s('e8')))
+          .to be_an(Array).and be_empty
+      end
+    end
+
+    context 'when some castles are possible' do
+      subject(:pre_move_analyzer) do
+        fen = 'r3k1nr/p1p2ppp/b1np4/1pb1p3/1PB1P2q/B1N2N1Q/P1PP1PPP/R3K2R w Kkq - 4 11'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      example 'source e1 returns an array of castle destinations' do
+        expect(pre_move_analyzer.to_castle_destinations_from(Chess::Coord.from_s('e1')))
+          .to match_array(%w[g1].map { |coord_s| Chess::Coord.from_s(coord_s) })
+      end
+
+      example 'source e8 returns an empty array' do
+        expect(pre_move_analyzer.to_castle_destinations_from(Chess::Coord.from_s('e8')))
+          .to be_an(Array).and be_empty
+      end
+    end
+  end
+
+  describe '#move_to_castle?' do
+    context 'when the move would castle' do
+      subject(:pre_move_analyzer) do
+        fen = 'rnbqkb1r/pppppppp/7n/8/2B1P3/7N/PPPP1PPP/RNBQK2R w KQkq - 5 4'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      let(:source_e1) { Chess::Coord.from_s('e1') }
+      let(:destination_g1) { Chess::Coord.from_s('g1') }
+
+      example 'source e1 to destination g1 returns true' do
+        expect(pre_move_analyzer.move_to_castle?(source_e1, destination_g1))
+          .to be(true)
+      end
+    end
+
+    context 'when the move would not castle' do
+      subject(:pre_move_analyzer) do
+        fen = 'rnbqkb1r/pppppppp/7n/8/2B1P3/7N/PPPP1PPP/RNBQK2R w KQkq - 5 4'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      let(:source_e1) { Chess::Coord.from_s('e1') }
+      let(:destination_f1) { Chess::Coord.from_s('f1') }
+
+      example 'source e1 to destination f1 returns false' do
+        expect(pre_move_analyzer.move_to_castle?(source_e1, destination_f1))
+          .to be(false)
+      end
+    end
+  end
+end
