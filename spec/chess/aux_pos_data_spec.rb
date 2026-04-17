@@ -553,6 +553,30 @@ describe Chess::AuxPosData do
     end
   end
 
+  describe '#remove_all_castling_rights' do
+    subject(:aux_pos_data) do
+      fen = Chess::DEFAULT_FEN
+      fen_parser = Chess::FENParser.new(fen)
+      described_class.from_fen_parser(fen_parser)
+    end
+
+    context 'with white' do
+      it 'removes all white castling rights' do
+        expect { aux_pos_data.remove_all_castling_rights(:white) }
+          .to change(aux_pos_data, :to_partial_fen)
+          .to('w kq - 0 1')
+      end
+    end
+
+    context 'with black' do
+      it 'removes all black castling rights' do
+        expect { aux_pos_data.remove_all_castling_rights(:black) }
+          .to change(aux_pos_data, :to_partial_fen)
+          .to('w KQ - 0 1')
+      end
+    end
+  end
+
   describe '#en_passant_target_available?' do
     context 'when an en passant target is available' do
       subject(:aux_pos_data_en_passant) { described_class.new(data_fields_en_passant) }

@@ -78,6 +78,16 @@ module Chess
       remove_castle('q')
     end
 
+    def remove_all_castling_rights(color)
+      if color == :white
+        remove_white_kingside_castle
+        remove_white_queenside_castle
+      elsif color == :black
+        remove_black_kingside_castle
+        remove_black_queenside_castle
+      end
+    end
+
     def en_passant_target_available?
       @data_fields[:en_passant_target] != '-'
     end
