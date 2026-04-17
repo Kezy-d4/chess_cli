@@ -45,5 +45,20 @@ module Chess
       BLACK_KINGSIDE_ROOK_HOME => :remove_black_kingside_castle,
       BLACK_QUEENSIDE_ROOK_HOME => :remove_black_queenside_castle
     }.freeze
+
+    ROOK_CASTLING_COORD_MAP = {
+      WHITE_KINGSIDE_CASTLE_PATH.last => {
+        source: WHITE_KINGSIDE_ROOK_HOME, destination: WHITE_KINGSIDE_ROOK_CASTLE_DESTINATION
+      },
+      WHITE_QUEENSIDE_CASTLE_PATH.last => {
+        source: WHITE_QUEENSIDE_ROOK_HOME, destination: WHITE_QUEENSIDE_ROOK_CASTLE_DESTINATION
+      },
+      BLACK_KINGSIDE_CASTLE_PATH.last => {
+        source: BLACK_KINGSIDE_ROOK_HOME, destination: BLACK_KINGSIDE_ROOK_CASTLE_DESTINATION
+      },
+      BLACK_QUEENSIDE_CASTLE_PATH.last => {
+        source: BLACK_QUEENSIDE_ROOK_HOME, destination: BLACK_QUEENSIDE_ROOK_CASTLE_DESTINATION
+      }
+    }.freeze
   end
 end
