@@ -424,4 +424,100 @@ describe Chess::PreMoveAnalyzer do
       end
     end
   end
+
+  describe '#move_would_capture_rook_at_home?' do
+    context 'when capturing a white rook at home' do
+      subject(:pre_move_analyzer) do
+        fen = 'rnbqkb1r/pppppppp/8/8/5N2/6n1/PPPPPPPP/RNBQKB1R b KQkq - 7 4'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      let(:source_g3) { Chess::Coord.from_s('g3') }
+      let(:destination_h1) { Chess::Coord.from_s('h1') }
+
+      example 'source g3 to destination h1 returns true' do
+        expect(pre_move_analyzer.move_would_capture_rook_at_home?(source_g3, destination_h1))
+          .to be(true)
+      end
+    end
+
+    context 'when capturing a black rook at home' do
+      subject(:pre_move_analyzer) do
+        fen = 'r1bqkb1r/pppppppp/2n3N1/8/8/8/PPPPPPPP/RNBQKB1n w Qkq - 2 6'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      let(:source_g6) { Chess::Coord.from_s('g6') }
+      let(:destination_h8) { Chess::Coord.from_s('h8') }
+
+      example 'source g6 to destination h8 returns true' do
+        expect(pre_move_analyzer.move_would_capture_rook_at_home?(source_g6, destination_h8))
+          .to be(true)
+      end
+    end
+
+    context 'when capturing rooks not at home' do
+      subject(:pre_move_analyzer) do
+        fen = 'R1bqkb2/1p1ppppr/1np5/p5Np/P5nP/1N6/1PPPPPPR/r1BQKB2 b - - 1 20'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      example 'source g4 to destination h2 returns false' do
+        result = pre_move_analyzer.move_would_capture_rook_at_home?(
+          Chess::Coord.from_s('g4'), Chess::Coord.from_s('h2')
+        )
+        expect(result).to be(false)
+      end
+
+      example 'source g5 to destination h7 returns false' do
+        result = pre_move_analyzer.move_would_capture_rook_at_home?(
+          Chess::Coord.from_s('g5'), Chess::Coord.from_s('h7')
+        )
+        expect(result).to be(false)
+      end
+
+      example 'source b6 to destination a8 returns false' do
+        result = pre_move_analyzer.move_would_capture_rook_at_home?(
+          Chess::Coord.from_s('b6'), Chess::Coord.from_s('a8')
+        )
+        expect(result).to be(false)
+      end
+
+      example 'source b3 to destination a1 returns false' do
+        result = pre_move_analyzer.move_would_capture_rook_at_home?(
+          Chess::Coord.from_s('b3'), Chess::Coord.from_s('a1')
+        )
+        expect(result).to be(false)
+      end
+    end
+
+    context 'when not capturing a rook at home or not capturing at all' do
+      subject(:pre_move_analyzer) do
+        fen = 'R1bqkb2/1p1ppppr/1np5/p5Np/P5nP/1N6/1PPPPPPR/r1BQKB2 b - - 1 20'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      example 'source g4 to destination f2 returns false' do
+        result = pre_move_analyzer.move_would_capture_rook_at_home?(
+          Chess::Coord.from_s('g4'), Chess::Coord.from_s('f2')
+        )
+        expect(result).to be(false)
+      end
+
+      example 'source g4 to destination f6 returns false' do
+        result = pre_move_analyzer.move_would_capture_rook_at_home?(
+          Chess::Coord.from_s('g4'), Chess::Coord.from_s('f6')
+        )
+        expect(result).to be(false)
+      end
+    end
+  end
 end

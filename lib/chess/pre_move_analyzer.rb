@@ -69,6 +69,11 @@ module Chess
       end
     end
 
+    def move_would_capture_rook_at_home?(source, destination)
+      move_to_capture?(source, destination) &&
+        rook_at_home?(destination)
+    end
+
     private
 
     def kingside_castle_legal?(color)
