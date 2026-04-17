@@ -24,6 +24,7 @@ module Chess
   require_relative 'chess/log'
   require_relative 'chess/pre_move_analyzer'
   require_relative 'chess/move_validator'
+  require_relative 'chess/post_move_analyzer'
   require_relative 'chess/turn_processor'
   require_relative 'chess/display'
   require_relative 'chess/game'
