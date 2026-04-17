@@ -372,4 +372,56 @@ describe Chess::PreMoveAnalyzer do
       end
     end
   end
+
+  describe '#rook_at_home?' do
+    context 'when white and black rooks are at home' do
+      subject(:pre_move_analyzer) do
+        fen = Chess::DEFAULT_FEN
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      example 'source h1 returns true' do
+        expect(pre_move_analyzer.rook_at_home?(Chess::Coord.from_s('h1'))).to be(true)
+      end
+
+      example 'source a1 returns true' do
+        expect(pre_move_analyzer.rook_at_home?(Chess::Coord.from_s('a1'))).to be(true)
+      end
+
+      example 'source h8 returns true' do
+        expect(pre_move_analyzer.rook_at_home?(Chess::Coord.from_s('h8'))).to be(true)
+      end
+
+      example 'source a8 returns true' do
+        expect(pre_move_analyzer.rook_at_home?(Chess::Coord.from_s('a8'))).to be(true)
+      end
+    end
+
+    context 'when white and black rooks are not at home' do
+      subject(:pre_move_analyzer) do
+        fen = '1nbqkbnR/rpppppp1/p7/P6p/7P/8/RPPPPPP1/1NBQKBNr w - - 11 12'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      example 'source a2 returns false' do
+        expect(pre_move_analyzer.rook_at_home?(Chess::Coord.from_s('a2'))).to be(false)
+      end
+
+      example 'source h1 returns false' do
+        expect(pre_move_analyzer.rook_at_home?(Chess::Coord.from_s('h1'))).to be(false)
+      end
+
+      example 'source a7 returns false' do
+        expect(pre_move_analyzer.rook_at_home?(Chess::Coord.from_s('a7'))).to be(false)
+      end
+
+      example 'source h8 returns false' do
+        expect(pre_move_analyzer.rook_at_home?(Chess::Coord.from_s('h8'))).to be(false)
+      end
+    end
+  end
 end

@@ -58,6 +58,17 @@ module Chess
       false
     end
 
+    def rook_at_home?(source)
+      return false unless @position.board.occupant_at(source).is_a?(Rook)
+
+      rook = @position.board.occupant_at(source)
+      if rook.white?
+        [Chess::WHITE_KINGSIDE_ROOK_HOME, Chess::WHITE_QUEENSIDE_ROOK_HOME].include?(source)
+      elsif rook.black?
+        [Chess::BLACK_KINGSIDE_ROOK_HOME, Chess::BLACK_QUEENSIDE_ROOK_HOME].include?(source)
+      end
+    end
+
     private
 
     def kingside_castle_legal?(color)
