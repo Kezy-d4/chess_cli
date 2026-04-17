@@ -38,5 +38,12 @@ module Chess
     BLACK_KINGSIDE_CASTLE_SPACE = [Coord.from_s('f8'), Coord.from_s('g8')].freeze
 
     BLACK_QUEENSIDE_CASTLE_SPACE = [Coord.from_s('d8'), Coord.from_s('c8'), Coord.from_s('b8')].freeze
+
+    CASTLE_RIGHTS_REMOVAL_METHOD_MAP = {
+      WHITE_KINGSIDE_ROOK_HOME => :remove_white_kingside_castle,
+      WHITE_QUEENSIDE_ROOK_HOME => :remove_white_queenside_castle,
+      BLACK_KINGSIDE_ROOK_HOME => :remove_black_kingside_castle,
+      BLACK_QUEENSIDE_ROOK_HOME => :remove_black_queenside_castle
+    }.freeze
   end
 end
