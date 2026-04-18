@@ -520,4 +520,70 @@ describe Chess::PreMoveAnalyzer do
       end
     end
   end
+
+  describe '#move_to_promote?' do
+    context 'when a white pawn would move to promote' do
+      subject(:pre_move_analyzer) do
+        fen = 'rnbqkbnr/pppppp1P/6p1/8/8/8/PPPPPP1P/RNBQKBNR w KQkq - 1 5'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      example 'source h7 to destination g8 returns true' do
+        result = pre_move_analyzer.move_to_promote?(
+          Chess::Coord.from_s('h7'), Chess::Coord.from_s('g8')
+        )
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when a black pawn would move to promote' do
+      subject(:pre_move_analyzer) do
+        fen = 'rnbqkb1r/ppp1pppp/5n2/4P1N1/5B2/3P4/PPp2PPP/RN1QKB1R b KQkq - 2 6'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      example 'source c2 to destination c1 returns true' do
+        result = pre_move_analyzer.move_to_promote?(
+          Chess::Coord.from_s('c2'), Chess::Coord.from_s('c1')
+        )
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when a pawn would not move to promote' do
+      subject(:pre_move_analyzer) do
+        fen = 'rnbqkb1r/ppp1pppp/5n2/4P1N1/5B2/3P4/PPp2PPP/RN1QKB1R b KQkq - 2 6'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      example 'source e7 to destination e6 returns false' do
+        result = pre_move_analyzer.move_to_promote?(
+          Chess::Coord.from_s('e7'), Chess::Coord.from_s('e6')
+        )
+        expect(result).to be(false)
+      end
+    end
+
+    context 'when not moving a pawn' do
+      subject(:pre_move_analyzer) do
+        fen = 'rnbqkb1r/ppp1pppp/5n2/4P1N1/5B2/3P4/PPp2PPP/RN1QKB1R b KQkq - 2 6'
+        fen_parser = Chess::FENParser.new(fen)
+        position = Chess::Position.from_fen_parser(fen_parser)
+        described_class.new(position)
+      end
+
+      example 'source f6 to destination g8 returns false' do
+        result = pre_move_analyzer.move_to_promote?(
+          Chess::Coord.from_s('f6'), Chess::Coord.from_s('g8')
+        )
+        expect(result).to be(false)
+      end
+    end
+  end
 end

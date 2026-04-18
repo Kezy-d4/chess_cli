@@ -74,6 +74,17 @@ module Chess
         rook_at_home?(destination)
     end
 
+    def move_to_promote?(source, destination)
+      return false unless @position.board.occupant_at(source).is_a?(Pawn)
+
+      pawn = @position.board.occupant_at(source)
+      if pawn.white?
+        destination.rank == Chess::WHITE_PAWN_LAST_RANK
+      elsif pawn.black?
+        destination.rank == Chess::BLACK_PAWN_LAST_RANK
+      end
+    end
+
     private
 
     def kingside_castle_legal?(color)
