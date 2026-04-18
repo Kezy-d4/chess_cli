@@ -16,6 +16,8 @@ module Chess
       @log = log
       @source = source
       @destination = destination
+      @pre_move_analyzer = PreMoveAnalyzer.new(@position)
+      @post_move_analyzer = PostMoveAnalyzer.new(@position, @log)
     end
 
     def play_turn
@@ -32,9 +34,10 @@ module Chess
       update_half_move_clock_before_move
       update_castling_rights_before_move
       handle_castling_before_move
+      promotion_boolean = @pre_move_analyzer.move_to_promote?(@source, @destination)
       @position.move_piece(@source, @destination)
       update_en_passant_target_after_move
-      handle_promotion_after_move
+      handle_promotion_after_move(promotion_boolean)
     end
 
     def swap_colors
@@ -49,34 +52,52 @@ module Chess
     end
 
     def update_half_move_clock_before_move
-      # if pawn would move or move would capture
-      #   reset half move clock
-      # else
-      #   increment half move clock
+      if @position.board.pawn_at?(@source) ||
+         @pre_move_analyzer.move_to_capture?(@source, @destination)
+        @position.aux_pos_data.reset_half_move_clock
+      else
+        @position.aux_pos_data.increment_half_move_clock
+      end
     end
 
     def update_castling_rights_before_move
-      # if move to castle
-      #   remove all castling rights for the appropriate color
-      # elsif rook would move from home
-      #   remove castling rights for the appropriate color and side
+      if @position.board.occupant_at(@source).is_a?(King)
+        king = @position.board.occupant_at(@source)
+        @position.aux_pos_data.remove_all_castling_rights(king.color)
+      elsif @pre_move_analyzer.rook_at_home?(@source)
+        @position.aux_pos_data.public_send(Chess::CASTLE_RIGHTS_REMOVAL_METHOD_MAP[@source])
+      elsif @pre_move_analyzer.move_would_capture_rook_at_home?(@source, @destination)
+        @position.aux_pos_data.public_send(Chess::CASTLE_RIGHTS_REMOVAL_METHOD_MAP[@destination])
+      end
     end
 
     def handle_castling_before_move
-      # if move to castle
-      #   move the appropriate rook to the appropriate destination
+      return unless @pre_move_analyzer.move_to_castle?(@source, @destination)
+
+      source_and_destination = Chess::ROOK_CASTLING_COORD_MAP[@destination]
+      rook_source = source_and_destination[:source]
+      rook_destination = source_and_destination[:destination]
+      @position.move_piece(rook_source, rook_destination)
     end
 
     def update_en_passant_target_after_move
-      # if previous move was a double pawn push
-      #   update the en passant target based on the color of the pawn
-      # else
-      #   reset the en passant target
+      target_s = @post_move_analyzer.to_en_passant_target_s
+      @position.aux_pos_data.update_en_passant_target(target_s)
     end
 
-    def handle_promotion_after_move
-      # if moved to promote
-      #   promote the pawn
+    def handle_promotion_after_move(promotion_boolean)
+      return unless promotion_boolean
+
+      promotion_type = Chess::PROMOTION_MAP[prompt_for_promotion]
+      @position.board.replace_at(@destination, promotion_type)
+    end
+
+    def prompt_for_promotion
+      puts 'Choose your promotion: ["Queen", "Knight", "Bishop", "Rook"]'
+      inp = gets.chomp.downcase
+      return inp if Chess::PROMOTION_MAP.key?(inp)
+
+      puts "Invalid input: #{inp}"
     end
 
     def update_full_move_number_before_color_swap
