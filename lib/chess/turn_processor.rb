@@ -11,7 +11,7 @@ module Chess
     # @param log [Log]
     # @param source [Coord] the legal source
     # @param destination [Coord] the legal destination
-    def initialize(...)
+    def initialize(position:, log:, source:, destination:)
       @position = position
       @log = log
       @source = source
@@ -32,8 +32,8 @@ module Chess
     def move
       update_metadata_before_move
       update_half_move_clock_before_move
-      update_castling_rights_before_move
       handle_castling_before_move
+      update_castling_rights_before_move
       promotion_boolean = @pre_move_analyzer.move_to_promote?(@source, @destination)
       @position.move_piece(@source, @destination)
       update_en_passant_target_after_move
