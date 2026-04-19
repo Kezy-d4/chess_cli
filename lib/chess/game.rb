@@ -3,6 +3,8 @@
 module Chess
   # A game of chess
   class Game
+    attr_reader :move_validator, :player_white, :player_black
+
     # @param position [Position]
     # @param log [Log]
     # @param player_white [Player] the player playing white
@@ -20,10 +22,11 @@ module Chess
       @player_white = player_white
       @player_black = player_black
       @display = display
+      @move_validator = MoveValidator.new(@position)
     end
 
     def play_turn(source, destination)
-      raise ArgumentError unless legal_move?(source, destination)
+      raise ArgumentError unless @move_validator.legal_move?(source, destination)
 
       TurnProcessor.play_turn(
         position: @position,
@@ -38,11 +41,11 @@ module Chess
     end
 
     def checkmate?
-      @position.check? && !MoveValidator.new(@position).any_legal_moves_available?
+      @position.check? && !@move_validator.any_legal_moves_available?
     end
 
     def stalemate?
-      !@position.check && !MoveValidator.new(@position).any_legal_moves_available?
+      !@position.check? && !@move_validator.any_legal_moves_available?
     end
 
     def draw_by_fifty_move_rule?
@@ -56,22 +59,6 @@ module Chess
     def over?
       draw_by_fifty_move_rule? || draw_by_threefold_repetition_rule? ||
         checkmate? || stalemate?
-    end
-
-    def legal_source?(source)
-      MoveValidator.new(@position).legal_source?(source)
-    end
-
-    def legal_move?(source, destination)
-      MoveValidator.new(@position).legal_move?(source, destination)
-    end
-
-    def to_all_legal_sources
-      MoveValidator.new(@position).to_all_legal_sources
-    end
-
-    def to_all_legal_destinations
-      MoveValidator.new(@position).to_all_legal_destinations
     end
 
     def to_active_player
@@ -98,12 +85,11 @@ module Chess
     end
 
     def select_source(source)
-      move_validator = MoveValidator.new(@position)
       @log.metadata[:current_source] = source
       @log.metadata[:currently_controlled] =
-        move_validator.to_legal_controlled_destinations_from(source)
+        @move_validator.to_legal_controlled_destinations_from(source)
       @log.metadata[:currently_attacked] =
-        move_validator.to_legal_attacked_destinations_from(source)
+        @move_validator.to_legal_attacked_destinations_from(source)
     end
 
     def deselect_source
