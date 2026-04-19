@@ -31,6 +31,10 @@ module Chess
       }.flatten.uniq
     end
 
+    def to_all_legal_destinations_from(source)
+      to_legal_attacked_destinations_from(source) + to_legal_controlled_destinations_from(source)
+    end
+
     # Returns a complete array of attacked destinations from a given legal source.
     # The method rejects destinations that would leave the active color in check
     # and includes any potential en passant attacks.
@@ -55,12 +59,6 @@ module Chess
         @position.move_would_leave_active_color_in_check?(source, destination)
       end
       (arr << @pre_move_analyzer.to_castle_destinations_from(source)).flatten
-    end
-
-    private
-
-    def to_all_legal_destinations_from(source)
-      to_legal_attacked_destinations_from(source) + to_legal_controlled_destinations_from(source)
     end
   end
 end

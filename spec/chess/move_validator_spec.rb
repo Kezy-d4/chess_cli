@@ -128,6 +128,23 @@ describe Chess::MoveValidator do
     end
   end
 
+  describe '#to_all_legal_destinations_from' do
+    subject(:move_validator) do
+      fen = 'r1bk2nr/p2p1pNp/n2B1Q2/1p1NP2P/6P1/3P4/P1P1K3/q5b1 b - - 2 22'
+      fen_parser = Chess::FENParser.new(fen)
+      position = Chess::Position.from_fen_parser(fen_parser)
+      described_class.new(position)
+    end
+
+    let(:source_g8) { Chess::Coord.from_s('g8') }
+
+    it 'returns an array of all legal destinations from the given source' do
+      expect(move_validator.to_all_legal_destinations_from(source_g8)).to match_array(
+        %w[e7 f6].map { |coord_s| Chess::Coord.from_s(coord_s) }
+      )
+    end
+  end
+
   describe '#to_legal_attacked_destinations_from' do
     context 'when an en passant capture would remove check' do
       subject(:move_validator) do
