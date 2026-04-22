@@ -93,11 +93,13 @@ module Chess
     end
 
     def prompt_for_promotion
-      puts 'Choose your promotion: ["Queen", "Knight", "Bishop", "Rook"]'
-      inp = gets.chomp.downcase
-      return inp if Chess::PROMOTION_MAP.key?(inp)
+      loop do
+        print 'Choose your promotion ["Queen", "Knight", "Bishop", "Rook"]: '
+        inp = gets.chomp.downcase
+        return inp if Chess::PROMOTION_MAP.key?(inp)
 
-      puts "Invalid input: #{inp}"
+        puts "Invalid input: #{inp}\n\n"
+      end
     end
 
     def update_full_move_number_before_color_swap
