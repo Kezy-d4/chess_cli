@@ -67,20 +67,12 @@ end
 def print_source_prompt(game)
   puts "#{game.to_active_player}, it's your turn."
   puts 'Your king is in check! Your next move must remove check.' if game.check?
-  puts <<~HEREDOC
-    Select one of your squares:
-    #{print_possible_sources(game)}
-    Alternatively, input "quit" to save and exit the game.
-  HEREDOC
-end
-
-def print_possible_sources(game)
-  game.move_validator.to_all_legal_sources.map(&:to_s)
+  print 'Select one of your squares or input "quit" to save and exit the game: '
 end
 
 def prompt_for_destination(source_inp, game)
   loop do
-    print_destination_prompt(source_inp, game)
+    print_destination_prompt(game)
     inp = gets.chomp.downcase
     return inp if valid_destination_input?(source_inp, inp, game) || valid_escape_input?(inp)
 
@@ -88,19 +80,9 @@ def prompt_for_destination(source_inp, game)
   end
 end
 
-def print_destination_prompt(source_inp, game)
-  puts <<~HEREDOC
-    #{game.to_active_player}, it's your turn.
-    Select a destination:
-    #{print_possible_destinations_from(source_inp, game)}
-    Alternatively, input "esc" to return and select another square.
-  HEREDOC
-end
-
-def print_possible_destinations_from(source_inp, game)
-  game.move_validator.to_all_legal_destinations_from(
-    Chess::Coord.from_s(source_inp)
-  ).map(&:to_s)
+def print_destination_prompt(game)
+  puts "#{game.to_active_player}, it's your turn."
+  print 'Select a destination or input "esc" to return and select another square: '
 end
 
 def prompt_with_main_menu(options)
@@ -208,8 +190,8 @@ puts <<~HEREDOC
   Let's play chess!
 
   Tips:
-  - Input "quit" when available to save and exit the game.
-  - Input "esc" when available to return and make another selection.
+  - Input "quit" when prompted to save and exit the game.
+  - Input "esc" when prompted to return and make another selection.
   - When prompted to select a source or destination, input your desired
     algebraic coordinates, e.g. "e4".
 
@@ -221,7 +203,6 @@ system('clear')
 # Play the game
 loop do
   # Evaluate win/draw conditions
-  binding.pry
   break if game.over?
 
   # Play a turn
