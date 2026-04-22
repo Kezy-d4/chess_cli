@@ -69,7 +69,7 @@ module Chess
     def render_controlled_square(bg_color)
       fg_rgb_val = Chess::COLOR_RGB_MAP[:lighter_orange]
       bg_rgb_val = Chess::COLOR_RGB_MAP[bg_color]
-      square = " #{Chess::CONTROLLED_INDICATOR} "
+      square = " #{Chess::CONTROLLED_DESTINATION_INDICATOR} "
       print "\e[48;2;#{bg_rgb_val}m\e[38;2;#{fg_rgb_val}m#{square}\e[0m"
     end
 
@@ -82,7 +82,11 @@ module Chess
     end
 
     def render_attacked_square(occupant)
-      render_occupied_square(occupant, :darker_orange)
+      if occupant.nil?
+        render_vacant_square(:darker_orange)
+      else
+        render_occupied_square(occupant, :darker_orange)
+      end
     end
 
     def render_previous_source_square
