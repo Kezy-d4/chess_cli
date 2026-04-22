@@ -134,14 +134,6 @@ out of scope or because I decided not to pursue them. They include:
 - Draw by dead position
 - AI opponent
 
-## Complete Gameplay Showcase
-
-Watch this gameplay showcase playing the entire [Immortal Game](https://en.wikipedia.org/wiki/Immortal_Game#Annotated_game).
-
-<video width="320" height="240" controls>
-  <source src="media/videos/immortal_game.webm.mp4" type="video/mp4">
-</video>
-
 ## Retrospective
 
 Development of this project subverted my expectations more than once and there
