@@ -46,10 +46,6 @@ This software features a responsive user interface and display that informs the
 user with helpful feedback, validates inputs and prevents illegal moves according
 to the rules of chess.
 
-<video width="320" height="240" controls>
-  <source src="media/videos/ux.webm" type="video/webm">
-</video>
-
 ### Check
 
 Check the opponent by attacking their king, but leaving them with at least one
