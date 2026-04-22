@@ -126,7 +126,7 @@ behavior.
 ### Features Not Included
 
 This software omits certain features you might expect either because they were
-out of scope or because I decided not to pursue them. They include:
+out of scope or because I decided not to pursue them, they include:
 
 - Time control
 - Draw offers
