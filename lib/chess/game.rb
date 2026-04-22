@@ -81,7 +81,7 @@ module Chess
 
     def display_board
       @display.render_board(@position.board.to_ranks, @log.metadata)
-      puts @position.to_fen.split[1..].join(' ') # Toggle optional extra FEN data
+      # puts @position.to_fen.split[1..].join(' ') # Toggle optional extra FEN data
     end
 
     def select_source(source)
