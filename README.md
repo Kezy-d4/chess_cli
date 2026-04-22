@@ -46,20 +46,28 @@ This software features a responsive user interface and display that informs the
 user with helpful feedback, validates inputs and prevents illegal moves according
 to the rules of chess.
 
+[ux.webm](https://github.com/user-attachments/assets/1f1aa868-b737-4e10-bfd7-f9bb05984b82)
+
 ### Check
 
 Check the opponent by attacking their king, but leaving them with at least one
 legal move.
+
+[check.webm](https://github.com/user-attachments/assets/ab8f6286-f671-4870-801e-eecb004587d2)
 
 ### Checkmate
 
 Checkmate the opponent by giving check to their king and leaving them without
 any legal moves.
 
+[checkmate.webm](https://github.com/user-attachments/assets/73cbaaa9-2a5c-404b-9753-1b04f41ea73a)
+
 ### Stalemate
 
 The game draws by stalemate when the player to act is not in check, but has no
 legal moves.
+
+[stalemate.webm](https://github.com/user-attachments/assets/e7d39e87-d653-4dca-a8ec-cd5ad8178962)
 
 ### Draw by Fifty-Move and Threefold Repetition Rules
 
@@ -81,18 +89,26 @@ threefold repetition rule, eliminating draw claims.
 Capture en passant when a pawn is in position to capitalize on an en passant
 target.
 
+[en_passant.webm](https://github.com/user-attachments/assets/280729e1-19e0-48ae-a875-eafe5a1ebbdb)
+
 ### Castling
 
 Castle kingside or queenside when rights are intact, the way is clear and the
 king would not move through check.
 
+[castling.webm](https://github.com/user-attachments/assets/d0f91b3a-d5e6-46ab-bed4-423238a0d900)
+
 ### Promotion
 
 Promote a pawn when moving it to its last rank.
 
+[promotion.webm](https://github.com/user-attachments/assets/ed15f3a1-8fb0-40d3-86aa-5d8dc923f43e)
+
 ### Double Pawn Push
 
 Push a pawn two squares forward when moving it from its home rank.
+
+[double_pawn_push.webm](https://github.com/user-attachments/assets/9ce85bf7-93a4-445a-927d-40bf181efa5c)
 
 ### Save and Load
 
@@ -104,6 +120,8 @@ This software does not verify the integrity of the save file, nor does it save
 automatically except for at the end of a game. Tampering with the save file or
 exiting the program outside of the provided mechanisms may cause unexpected
 behavior.
+
+[save_and_load.webm](https://github.com/user-attachments/assets/972eb7ef-1ec6-43d4-ba4a-6d7cf7e853ad)
 
 ### Features Not Included
 
