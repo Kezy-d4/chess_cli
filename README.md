@@ -24,8 +24,8 @@ skills in:
 - [Getting Started](#getting-started)
 - [Features](#features)
 - [Retrospective](#retrospective)
-- [Acknowledgments](#acknowledgements)
 - [Contributing](#contributing)
+- [Acknowledgments](#acknowledgements)
 
 ## Getting Started
 
@@ -172,13 +172,13 @@ proper scope control, development time can theoretically extend to infinity.
 Through plenty of struggle during development, I gained skills, experience and
 knowledge that I hope to carry with me into future projects.
 
-## Acknowledgements
-
-Thank you to the various members of The Odin Project community who supported and
-guided me during development.
-
 ## Contributing
 
 This project is not under active development and will likely not receive further
 development. That said, if you discover a bug while play-testing, detailed reports
 submitted as a GitHub issue are welcome and appreciated.
+
+## Acknowledgements
+
+Thank you to the various members of The Odin Project community who supported and
+guided me during development.
