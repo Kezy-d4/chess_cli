@@ -19,6 +19,15 @@ skills in:
 - Version control
 - and more...
 
+## Table of Contents
+
+- [Getting Started](#getting-started)
+- [Features](#features)
+- [Retrospective](#retrospective)
+- [Acknowledgments](#acknowledgements)
+- [Contributing](#contributing)
+- [A Note About AI](#a-note-about-ai)
+
 ## Getting Started
 
 Assuming Ruby is installed in a supported environment:
