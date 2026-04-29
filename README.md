@@ -32,10 +32,10 @@ skills in:
 
 Assuming Ruby is installed in a supported environment:
 
-- Clone this repository onto your local machine.
-- `cd` into the cloned repo.
-- Install the necessary dependencies and Ruby version.
-- Run the main file to play.
+1) Clone this repository onto your local machine.
+2) `cd` into the cloned repo.
+3) Install the necessary dependencies and Ruby version.
+4) Run the main file to play.
 
 For example:
 
