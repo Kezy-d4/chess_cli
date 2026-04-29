@@ -25,6 +25,7 @@ skills in:
 - [Features](#features)
 - [Retrospective](#retrospective)
 - [Contributing](#contributing)
+- [Expanding Documentation](#expanding-documentation)
 - [Acknowledgments](#acknowledgements)
 - [License](#license)
 
@@ -178,6 +179,27 @@ knowledge that I hope to carry with me into future projects.
 This project is not under active development and will likely not receive further
 development. That said, if you discover a bug while play-testing, detailed reports
 submitted as a GitHub issue are welcome and appreciated.
+
+## Expanding Documentation
+
+As mentioned in [Contributing](#contributing), I consider this project complete
+and it is unlikely to receive further development. However, after reviewing the
+chess solutions of some fellow Odinites, one thing I admire about their repos is
+the documentation explaining their process and timeline of development, as well
+as an overview of their architecture and design decisions.
+
+I did write a brief [Retrospective](#retrospective), but I would like to consider
+expanding it to discuss in more detail:
+
+- The many obstacles I faced during development and how I overcame them
+- Examples where I asked questions and implemented feedback
+- My design decisions, their implications and how I arrived to them
+- Additional lessons learned and takeaways from the project
+
+I may or may not move forward with such documentation expansion on this project,
+but it makes me inclined to maintain some sort of dev log or journal for future
+projects. All of this being said, I am a strong believer in code as documentation,
+so I hope that the codebase at least can largely speak for itself.
 
 ## Acknowledgements
 
