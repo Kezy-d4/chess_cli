@@ -50,13 +50,17 @@ bundle exec ruby main.rb
 
 ## Features
 
+*Note*:
+If you have trouble loading any of the media in this section, try refreshing the
+page and playing the video again.
+
 ### Responsive User Interface and Display
 
 This software features a responsive user interface and display that informs the
 user with helpful feedback, validates inputs and prevents illegal moves according
 to the rules of chess.
 
-*Note:*
+*Note*:
 As this is a command line app, the display may render differently or unexpectedly
 in various environments. You can try adjusting your terminal settings if this is
 the case. Also, it is recommended to increase your terminal font size to enlarge
