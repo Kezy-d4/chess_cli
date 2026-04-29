@@ -26,6 +26,7 @@ skills in:
 - [Retrospective](#retrospective)
 - [Contributing](#contributing)
 - [Acknowledgments](#acknowledgements)
+- [License](#license)
 
 ## Getting Started
 
@@ -182,3 +183,7 @@ submitted as a GitHub issue are welcome and appreciated.
 
 Thank you to the various members of The Odin Project community who supported and
 guided me during development.
+
+## License
+
+This software is licensed under the GNU GPLv3. See the [full license](COPYING.txt).
