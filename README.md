@@ -56,6 +56,12 @@ This software features a responsive user interface and display that informs the
 user with helpful feedback, validates inputs and prevents illegal moves according
 to the rules of chess.
 
+*Note:*
+As this is a command line app, the display may render differently or unexpectedly
+in various environments. You can try adjusting your terminal settings if this is
+the case. Also, it is recommended to increase your terminal font size to enlarge
+the display.
+
 [ux.webm](https://github.com/user-attachments/assets/1f1aa868-b737-4e10-bfd7-f9bb05984b82)
 
 ### Check
