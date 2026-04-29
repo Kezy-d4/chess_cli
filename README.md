@@ -71,7 +71,8 @@ the display.
 ### Check
 
 Check the opponent by attacking their king, but leaving them with at least one
-legal move.
+legal move. You can never move into check and must escape check when your king is
+under attack.
 
 [check.webm](https://github.com/user-attachments/assets/ab8f6286-f671-4870-801e-eecb004587d2)
 
@@ -126,7 +127,8 @@ Promote a pawn when moving it to its last rank.
 
 ### Double Pawn Push
 
-Push a pawn two squares forward when moving it from its home rank.
+Push a pawn two squares forward when moving it from its home rank so long as the
+way is unobstructed.
 
 [double_pawn_push.webm](https://github.com/user-attachments/assets/9ce85bf7-93a4-445a-927d-40bf181efa5c)
 
