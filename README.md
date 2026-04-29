@@ -26,7 +26,6 @@ skills in:
 - [Retrospective](#retrospective)
 - [Acknowledgments](#acknowledgements)
 - [Contributing](#contributing)
-- [A Note About AI](#a-note-about-ai)
 
 ## Getting Started
 
@@ -183,8 +182,3 @@ guided me during development.
 This project is not under active development and will likely not receive further
 development. That said, if you discover a bug while play-testing, detailed reports
 submitted as a GitHub issue are welcome and appreciated.
-
-## A Note About AI
-
-No "generative AI" tools were used in any capacity at any point during this
-project's development.
