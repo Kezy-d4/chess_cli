@@ -96,7 +96,10 @@ def prompt_with_main_menu(options)
 end
 
 def print_main_menu(options)
-  puts 'Chess CLI by Kezy'
+  puts <<~HEREDOC
+    Chess CLI  Copyright (C) 2026  Kezy-d4
+    Licensed under the GNU GPLv3: https://www.gnu.org/licenses/gpl-3.0.en.html
+  HEREDOC
   options.each { |key, val| print "#{key}) #{val}\n" }
 end
 
