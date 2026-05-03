@@ -1,7 +1,3 @@
-# Chess CLI  Copyright (C) 2026  Kezy-d4
-# This software is licensed under the GNU GPLv3.
-# See the full license: https://www.gnu.org/licenses/gpl-3.0.en.html
-
 # frozen_string_literal: true
 
 require_relative 'lib/chess'
@@ -100,16 +96,8 @@ def prompt_with_main_menu(options)
 end
 
 def print_main_menu(options)
-  puts 'Chess CLI'
+  puts 'Chess CLI by Kezy-d4'
   options.each { |key, val| print "#{key}) #{val}\n" }
-end
-
-def print_license_and_copyright_notice
-  puts <<~HEREDOC
-    Chess CLI  Copyright (C) 2026  Kezy-d4
-    This software is licensed under the GNU GPLv3.
-    See the full license: https://www.gnu.org/licenses/gpl-3.0.en.html
-  HEREDOC
 end
 
 def prompt_for_player_name(color)
@@ -155,7 +143,6 @@ end
 # SCRIPT
 
 # Main menu
-puts "#{print_license_and_copyright_notice}\n"
 processed_main_menu_inp = nil
 loop do # rubocop:disable Metrics/BlockLength
   main_menu_inp = prompt_with_main_menu(MAIN_MENU_OPTIONS)

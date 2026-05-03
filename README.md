@@ -27,7 +27,6 @@ skills in:
 - [Contributing](#contributing)
 - [Expanding Documentation](#expanding-documentation)
 - [Acknowledgments](#acknowledgements)
-- [License and Copyright](#license-and-copyright)
 
 ## Getting Started
 
@@ -218,9 +217,3 @@ so I hope that the codebase at least can largely speak for itself.
 
 Thank you to the various members of The Odin Project community who supported and
 guided me during development.
-
-## License and Copyright
-
-Chess CLI  Copyright (C) 2026  Kezy-d4
-
-This software is licensed under the GNU GPLv3. See the [full license](COPYING.txt).
