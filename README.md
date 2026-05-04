@@ -38,6 +38,8 @@ skills in:
 - [Contributing](#contributing)
 - [Expanding Documentation](#expanding-documentation)
 - [Acknowledgments](#acknowledgements)
+  - [The Odin Project](#the-odin-project)
+  - [Gems Used](#gems-used)
 - [Copyright](#copyright)
 
 ## Getting Started
@@ -249,4 +251,4 @@ guided me during development.
 
 ## Copyright
 
-Chess CLI Copyright (c) 2026 Kezy-d4. All rights reserved.
+Copyright (c) 2026 Kezy-d4. All rights reserved.
