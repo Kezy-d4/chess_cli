@@ -27,7 +27,7 @@ skills in:
   - [Check](#check)
   - [Checkmate](#checkmate)
   - [Stalemate](#stalemate)
-  - [Draw by Fifty-Move and Threefold Repetition Rules](#draw-by-fifty-move-and-threefold-repetition-rules)
+  - [Fifty-Move and Threefold Repetition Rules](#fifty-move-and-threefold-repetition-rules)
   - [En Passant](#en-passant)
   - [Castling](#castling)
   - [Promotion](#promotion)
@@ -101,7 +101,7 @@ legal moves.
 
 [stalemate.webm](https://github.com/user-attachments/assets/e7d39e87-d653-4dca-a8ec-cd5ad8178962)
 
-### Draw by Fifty-Move and Threefold Repetition Rules
+### Fifty-Move and Threefold Repetition Rules
 
 The game draws by the fifty-move rule after fifty consecutive moves without any
 captures or pawn moves, and the game draws by the threefold repetition rule when
@@ -163,7 +163,7 @@ out of scope or because I decided not to pursue them, they include:
 
 - Time control
 - Draw offers
-- Draw claims (see [Draw by Fifty-Move and Threefold Repetition Rules](#draw-by-fifty-move-and-threefold-repetition-rules))
+- Draw claims (see [Fifty-Move and Threefold Repetition Rules](#fifty-move-and-threefold-repetition-rules))
 - Draw by dead position
 - AI opponent
 - Resignation
