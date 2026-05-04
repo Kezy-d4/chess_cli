@@ -215,5 +215,22 @@ so I hope that the codebase at least can largely speak for itself.
 
 ## Acknowledgements
 
+### The Odin Project
+
 Thank you to the various members of The Odin Project community who supported and
 guided me during development.
+
+### Gems Used
+
+#### Linting and Formatting
+
+- [RuboCop](https://github.com/rubocop)
+
+#### Testing
+
+- [RSpec](https://github.com/rspec)
+- [SimpleCov](https://github.com/simplecov-ruby)
+
+#### Debugging
+
+- [Pry-Byebug](https://github.com/deivid-rodriguez/pry-byebug)
